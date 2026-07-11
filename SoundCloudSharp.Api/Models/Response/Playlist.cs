@@ -1,3 +1,7 @@
+using System.Text.Json.Serialization;
+using SoundCloudSharp.Api.Models.Common;
+using SoundCloudSharp.Api.Models.Converters;
+
 namespace SoundCloudSharp.Api.Models.Response;
 
 public record Playlist
@@ -11,12 +15,14 @@ public record Playlist
     public bool Downloadable { get; init; }
     public int Duration { get; init; }
     public string Ean { get; init; }
-    public string EmbeddableBy { get; init; }
+    [JsonConverter(typeof(StringEnumConverter<Enums.Embed>))]
+    public Enums.Embed EmbeddableBy { get; init; }
     public string Genre { get; init; }
     public int LabelId { get; init; }
     public string LabelName { get; init; }
     public DateTimeOffset LastModified { get; init; }
-    public string License { get; init; }
+    [JsonConverter(typeof(StringEnumConverter<Enums.License>))]
+    public Enums.License License { get; init; }
     public string Permalink { get; init; }
     public Uri PermalinkUrl { get; init; }
     public string PlaylistType { get; init; }
@@ -26,12 +32,14 @@ public record Playlist
     public int ReleaseDay { get; init; }
     public int ReleaseMonth { get; init; }
     public int ReleaseYear { get; init; }
-    public string Sharing  { get; init; }
+    [JsonConverter(typeof(StringEnumConverter<Enums.Sharing>))]
+    public Enums.Sharing Sharing  { get; init; }
     public bool Streamable { get; init; }
     public string TagList { get; init; }
     public int TrackCount { get; init; }
     public List<Track> Tracks { get; init; }
-    public string Type { get; init; }
+    [JsonConverter(typeof(StringEnumConverter<Enums.PlaylistType>))]
+    public Enums.PlaylistType Type { get; init; }
     public Uri Uri { get; init; }
     public FullUser? User { get; init; }
     public string UserUrn { get; init; }

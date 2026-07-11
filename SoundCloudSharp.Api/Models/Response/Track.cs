@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
-using SoundCloudSharp.Api.Models.Converter;
+using SoundCloudSharp.Api.Models.Common;
+using SoundCloudSharp.Api.Models.Converters;
 
 namespace SoundCloudSharp.Api.Models.Response;
 
@@ -22,7 +23,8 @@ public record Track
     public string Isrc { get; init; }
     public string KeySignature { get; init; }
     public string LabelName { get; init; }
-    public string License { get; init; }
+    [JsonConverter(typeof(StringEnumConverter<Enums.License>))]
+    public Enums.License License { get; init; }
     public string MetadataArtist { get; init; }
     public Uri PermalinkUrl { get; init; }
     public long PlaybackCount { get; init; }
@@ -32,7 +34,8 @@ public record Track
     public int ReleaseDay {  get; init; }
     public int ReleaseMonth { get; init; }
     public int ReleaseYear { get; init; }
-    public string Sharing { get; init; }
+    [JsonConverter(typeof(StringEnumConverter<Enums.Sharing>))]
+    public Enums.Sharing Sharing { get; init; }
     public bool Streamable { get; init; }
     public string TagList { get; init; }
     public Uri Uri { get; init; }
