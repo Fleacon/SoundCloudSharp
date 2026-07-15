@@ -1,0 +1,63 @@
+using System.Text;
+
+namespace SoundCloudSharp.Api.Http;
+
+public class HttpService : IDisposable
+{
+    private readonly HttpClient _httpClient;
+
+    public HttpService()
+    {
+        _httpClient = new HttpClient();
+    }
+    
+    public HttpService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    public async Task<Response> DoRequest(Request request, CancellationToken cancellationToken = default)
+    {
+        var httpRequestMessage = CreateRequest(request);
+        var httpResponse = await _httpClient.SendAsync(httpRequestMessage,  cancellationToken);
+        var response = await CreateResponse(httpResponse, cancellationToken);
+        return response;
+    }
+
+    private static HttpRequestMessage CreateRequest(Request request)
+    {
+        var fullUri = new Uri(request.BaseAddress, request.Endpoint);
+        var requestMessage = new HttpRequestMessage(request.Method, fullUri);
+        foreach (var header in request.Headers)
+        {
+            requestMessage.Headers.Add(header.Key, header.Value);
+        }
+
+        requestMessage.Content = request.Body switch
+        {
+            HttpContent body => body,
+            string body => new StringContent(body, Encoding.UTF8, "application/json"),
+            Stream body => new StreamContent(body),
+            _ => requestMessage.Content
+        };
+        
+        return requestMessage;
+    }
+
+    private static async Task<Response> CreateResponse(HttpResponseMessage httpResponse,  CancellationToken cancellationToken = default)
+    {
+        var body = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
+        var headers = httpResponse.Headers.ToDictionary(header => header.Key, header => header.Value.First());
+        return new Response(httpResponse.StatusCode, headers)
+        {
+            Body = body,
+            ContentType = httpResponse.Content.Headers.ContentType?.MediaType
+        };
+    }
+
+    public void Dispose()
+    {
+        _httpClient.Dispose();
+        GC.SuppressFinalize(this);
+    }
+}
