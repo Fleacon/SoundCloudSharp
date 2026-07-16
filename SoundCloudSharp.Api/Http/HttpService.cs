@@ -16,17 +16,17 @@ public class HttpService : IDisposable
         _httpClient = httpClient;
     }
 
-    public async Task<Response> DoRequest(Request request, CancellationToken cancellationToken = default)
+    public async Task<Response> DoRequest(Uri baseAddress, Request request, CancellationToken cancellationToken = default)
     {
-        var httpRequestMessage = CreateRequest(request);
+        var httpRequestMessage = CreateRequest(baseAddress, request);
         var httpResponse = await _httpClient.SendAsync(httpRequestMessage,  cancellationToken);
         var response = await CreateResponse(httpResponse, cancellationToken);
         return response;
     }
 
-    private static HttpRequestMessage CreateRequest(Request request)
+    private static HttpRequestMessage CreateRequest(Uri baseAddress, Request request)
     {
-        var fullUri = new Uri(request.BaseAddress, request.Endpoint);
+        var fullUri = new Uri(baseAddress, request.Endpoint);
         var requestMessage = new HttpRequestMessage(request.Method, fullUri);
         foreach (var header in request.Headers)
         {
