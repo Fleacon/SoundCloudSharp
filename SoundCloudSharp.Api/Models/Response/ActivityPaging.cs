@@ -1,6 +1,6 @@
 namespace SoundCloudSharp.Api.Models.Response;
    
-public class ActivityPaging<T> : Paging<T>
+public class ActivityPaging : Paging<Activity>
 {
    public Uri FutureHref { get; init; } 
 }

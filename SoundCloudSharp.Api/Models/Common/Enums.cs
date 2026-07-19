@@ -31,4 +31,12 @@ public static class Enums {
         Album,
         Playlist
     }
+    
+    public enum Access
+    {
+        Unknown = 0,
+        Playable,
+        Preview,
+        Blocked
+    }
 }

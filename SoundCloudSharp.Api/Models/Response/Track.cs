@@ -51,11 +51,3 @@ public record Track
     public bool RevealStats { get; init; }
     public Uri SecretUri { get; init; }
 }
-
-public enum Access
-{
-    Unknown = 0,
-    Playable,
-    Preview,
-    Blocked
-}
