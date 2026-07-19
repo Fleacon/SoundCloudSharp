@@ -14,7 +14,7 @@ public static class SoundCloudUrls
     public static Uri LikedPlaylists() => new("/me/likes/playlists");
     public static Uri Followings() => new("/me/followings");
     public static Uri FollowingsTracks() => new("/me/followings/tracks");
-    public static Uri Following(string userUrn) => new($"/me/followings/{Uri.EscapeDataString(userUrn)}");
+    public static Uri Follow(string userUrn) => new($"/me/followings/{Uri.EscapeDataString(userUrn)}");
     public static Uri Followers() => new("/me/followers");
     public static Uri MePlaylists() => new("/me/playlists");
     public static Uri MeTracks() => new("/me/tracks");
