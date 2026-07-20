@@ -29,7 +29,8 @@ public static class SoundCloudUrls
     public static Uri PlaylistTracks(string playlistUrn) => new($"/playlists/{Uri.EscapeDataString(playlistUrn)}/tracks");
     public static Uri PlaylistReposters(string playlistUrn) => new($"/playlists/{Uri.EscapeDataString(playlistUrn)}/reposters");
     
-    public static Uri Track(string tracksUrn) =>  new($"/tracks/{Uri.EscapeDataString(tracksUrn)}");
+    public static Uri Track(string trackUrn) =>  new($"/tracks/{Uri.EscapeDataString(trackUrn)}");
+    public static Uri TrackStorefront(string trackUrn)  => new($"/tracks/{Uri.EscapeDataString(trackUrn)}/storefront");
     public static Uri TrackPreview(string trackUrn) => new($"/tracks/{Uri.EscapeDataString(trackUrn)}/preview");
     public static Uri TrackStreams(string trackUrn) => new($"/tracks/{Uri.EscapeDataString(trackUrn)}/streams");
     public static Uri TrackComments(string trackUrn) => new($"/tracks/{Uri.EscapeDataString(trackUrn)}/comments");

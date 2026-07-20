@@ -34,9 +34,22 @@ public static class Enums {
     
     public enum Access
     {
-        Unknown = 0,
         Playable,
         Preview,
         Blocked
+    }
+
+    public enum StoreType
+    {
+        Digital,
+        Vinyl,
+        Cd,
+        Cassette,
+        Apparel,
+        SamplePack,
+        Subscription,
+        LiveEvent,
+        LiveStream,
+        Other
     }
 }
