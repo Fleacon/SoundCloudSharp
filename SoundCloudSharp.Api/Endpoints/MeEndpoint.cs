@@ -26,24 +26,21 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(request);
-        var uri = BuildUriWithQuery(SoundCloudUrls.Feed(), query);
-        return await Connector.GetAsync<ActivityPaging>(uri, cancellationToken);
+        return await Connector.GetAsync<ActivityPaging>(SoundCloudUrls.Feed(), query, cancellationToken);
     }
 
     public async Task<ActivityPaging> GetTrackFeed(FeedRequest? request = null,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(request);
-        var uri = BuildUriWithQuery(SoundCloudUrls.FeedTracks(), query);
-        return await Connector.GetAsync<ActivityPaging>(uri, cancellationToken);
+        return await Connector.GetAsync<ActivityPaging>(SoundCloudUrls.FeedTracks(), query, cancellationToken);
     }
     
     public async Task<Paging<Track>> GetRecentlyPlayedTracks(Enums.Access[]? access = null,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(access);
-        var uri = BuildUriWithQuery(SoundCloudUrls.RecentlyPlayedTracks(), query);
-        return await Connector.GetAsync<Paging<Track>>(uri, cancellationToken);
+        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.RecentlyPlayedTracks(), query, cancellationToken);
     }
 
     public async Task<Paging<Track>> GetLikedTracks(PagedTracksRequest? request = null,
@@ -51,8 +48,7 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new PagedTracksRequest();
         var query = BuildQuery(request);
-        var uri = BuildUriWithQuery(SoundCloudUrls.LikedTracks(), query);
-        return await Connector.GetAsync<Paging<Track>>(uri, cancellationToken);
+        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.LikedTracks(), query, cancellationToken);
     }
 
     public async Task<Paging<Playlist>> GetLikedPlaylists(PagedRequest? request = null,
@@ -60,8 +56,7 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new PagedRequest();
         var query = BuildQuery(request);
-        var uri = BuildUriWithQuery(SoundCloudUrls.LikedPlaylists(), query);
-        return await Connector.GetAsync<Paging<Playlist>>(uri, cancellationToken);
+        return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.LikedPlaylists(), query, cancellationToken);
     }
 
     public async Task<Paging<FullUser?>> GetFollowings(PagedRequest? request = null,
@@ -69,8 +64,7 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new PagedRequest();
         var query = BuildQuery(request);
-        var uri = BuildUriWithQuery(SoundCloudUrls.Followings(), query);
-        return await Connector.GetAsync<Paging<FullUser?>>(uri, cancellationToken);
+        return await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.Followings(), query, cancellationToken);
     }
 
     public async Task<Paging<Track>> GetFollowingsTracks(PagedTracksRequest? request = null,
@@ -78,8 +72,7 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new PagedTracksRequest();
         var query = BuildQuery(request);
-        var uri = BuildUriWithQuery(SoundCloudUrls.FollowingsTracks(), query);
-        return await Connector.GetAsync<Paging<Track>>(uri, cancellationToken);
+        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.FollowingsTracks(), query, cancellationToken);
     }
 
     public async Task<FollowResult> FollowUser(string userUrn, CancellationToken cancellationToken = default)
@@ -105,16 +98,14 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new PagedPlaylistRequest();
         var query = BuildQuery(request);
-        var uri = BuildUriWithQuery(SoundCloudUrls.MePlaylists(), query);
-        return await Connector.GetAsync<Paging<Playlist>>(uri, cancellationToken);
+        return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.MePlaylists(), query, cancellationToken);
     }
 
     public async Task<Paging<Track>> GetTracks(PagedRequest? request = null, CancellationToken cancellationToken = default)
     {
         request ??= new PagedRequest();
         var query = BuildQuery(request);
-        var uri = BuildUriWithQuery(SoundCloudUrls.MeTracks(), query);
-        return await Connector.GetAsync<Paging<Track>>(uri, cancellationToken);
+        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.MeTracks(), query, cancellationToken);
     }
 
     public async Task<Paging<Track>> GetRepostsTracks(PagedTracksRequest? request = null,
@@ -122,8 +113,7 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new PagedTracksRequest();
         var query = BuildQuery(request);
-        var uri = BuildUriWithQuery(SoundCloudUrls.RepostTracks(), query);
-        return await Connector.GetAsync<Paging<Track>>(uri, cancellationToken);
+        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.RepostTracks(), query, cancellationToken);
     }
 
     public async Task<Paging<Playlist>> GetRepostsPlaylists(PagedRequest? request = null,
@@ -131,7 +121,6 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new PagedRequest();
         var query = BuildQuery(request);
-        var uri = BuildUriWithQuery(SoundCloudUrls.RepostPlaylists(), query);
-        return await Connector.GetAsync<Paging<Playlist>>(uri, cancellationToken);
+        return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.RepostPlaylists(), query, cancellationToken);
     }
 }

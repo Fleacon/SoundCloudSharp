@@ -35,11 +35,15 @@ public class JsonSerializer
         return new DeserializedResponse<T>(response);
     }
 
-    public Request SerializeRequest(Request request)
+    public Request SerializeBody(Request request)
     {
-        if (request.Body is string or Stream or HttpContent or null)
-            return request;
-
-        return request with { Body = JsonConvert.SerializeObject(request.Body, _settings) };
+        var body = request.Body;
+        var serializedBody = body switch
+        {
+            null or string or Stream or HttpContent => body,
+            _ => JsonConvert.SerializeObject(body, _settings)
+        };
+        
+        return request with { Body = serializedBody };
     }
 }

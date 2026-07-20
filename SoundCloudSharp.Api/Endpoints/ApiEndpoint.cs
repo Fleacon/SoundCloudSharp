@@ -1,4 +1,3 @@
-using System.Text;
 using SoundCloudSharp.Api.Http;
 
 namespace SoundCloudSharp.Api.Endpoints;
@@ -10,17 +9,6 @@ public abstract class ApiEndpoint
     protected ApiEndpoint(ApiConnector connector)
     {
         Connector = connector;
-    }
-
-    protected Uri BuildUriWithQuery(Uri endpoint, IDictionary<string, string> query)
-    {
-        if (query.Count == 0)
-            return endpoint;
-
-        var queryString = string.Join("&",
-            query.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}"));
-
-        return new Uri($"{endpoint}?{queryString}", UriKind.Relative);
     }
     
     protected Dictionary<string, string> BuildQuery<T>(T request)

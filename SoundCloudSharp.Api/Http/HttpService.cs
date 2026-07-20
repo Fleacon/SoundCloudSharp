@@ -26,7 +26,8 @@ public class HttpService : IDisposable
 
     private static HttpRequestMessage CreateRequest(Uri baseAddress, Request request)
     {
-        var fullUri = new Uri(baseAddress, request.Endpoint);
+        var absoluteUri = new Uri(baseAddress, request.Endpoint);
+        var fullUri = BuildUriWithQuery(absoluteUri, request.Parameters);
         var requestMessage = new HttpRequestMessage(request.Method, fullUri);
         foreach (var header in request.Headers)
         {
@@ -42,6 +43,17 @@ public class HttpService : IDisposable
         };
         
         return requestMessage;
+    }
+    
+    private static Uri BuildUriWithQuery(Uri endpoint, IDictionary<string, string> query)
+    {
+        if (query.Count == 0)
+            return endpoint;
+
+        var queryString = string.Join("&",
+            query.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}"));
+
+        return new Uri($"{endpoint}?{queryString}", UriKind.Relative);
     }
 
     private static async Task<Response> CreateResponse(HttpResponseMessage httpResponse,  CancellationToken cancellationToken = default)

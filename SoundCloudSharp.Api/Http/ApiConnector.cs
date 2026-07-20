@@ -1,5 +1,7 @@
 using System.Net;
 using System.Text.Json;
+using Newtonsoft.Json;
+using SoundCloudSharp.Api.Endpoints;
 
 namespace SoundCloudSharp.Api.Http;
 
@@ -62,18 +64,20 @@ public class ApiConnector
         return response.StatusCode;
     }
 
-    private static Request BuildRequest(Uri uri, HttpMethod method, IDictionary<string, string>? parameters, IDictionary<string, string>? headers, object? body)
+    private Request BuildRequest(Uri uri, HttpMethod method, IDictionary<string, string>? parameters, IDictionary<string, string>? headers, object? body)
     {
-        // TODO: Apply Authentication
-        return new Request(uri, method)
+        var request = new Request(uri, method)
         {
             Headers = headers ?? new Dictionary<string, string>(),
             Body = body,
             Parameters = parameters ?? new Dictionary<string, string>(),
         };
+        var serializedRequest = _serializer.SerializeBody(request);
+        return serializedRequest;
     }
 
     // TODO: Process Errors
+    // TODO: Apply Authentication
     
     private async Task<T> DoSerializedRequest<T>(Uri uri, HttpMethod method, 
         IDictionary<string, string>? parameters = null, IDictionary<string, string>? headers = null, 
