@@ -15,13 +15,11 @@ public record Playlist
     public bool Downloadable { get; init; }
     public int Duration { get; init; }
     public string Ean { get; init; }
-    [JsonConverter(typeof(StringEnumConverter<Enums.Embed>))]
     public Enums.Embed EmbeddableBy { get; init; }
     public string Genre { get; init; }
     public int LabelId { get; init; }
     public string LabelName { get; init; }
     public DateTimeOffset LastModified { get; init; }
-    [JsonConverter(typeof(StringEnumConverter<Enums.License>))]
     public Enums.License License { get; init; }
     public string Permalink { get; init; }
     public Uri PermalinkUrl { get; init; }
@@ -32,13 +30,11 @@ public record Playlist
     public int ReleaseDay { get; init; }
     public int ReleaseMonth { get; init; }
     public int ReleaseYear { get; init; }
-    [JsonConverter(typeof(StringEnumConverter<Enums.Sharing>))]
     public Enums.Sharing Sharing  { get; init; }
     public bool Streamable { get; init; }
     public string TagList { get; init; }
     public int TrackCount { get; init; }
     public List<Track> Tracks { get; init; }
-    [JsonConverter(typeof(StringEnumConverter<Enums.PlaylistType>))]
     public Enums.PlaylistType Type { get; init; }
     public Uri Uri { get; init; }
     public FullUser? User { get; init; }

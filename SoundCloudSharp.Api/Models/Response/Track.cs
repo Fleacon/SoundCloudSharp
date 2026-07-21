@@ -23,7 +23,6 @@ public record Track
     public string Isrc { get; init; }
     public string KeySignature { get; init; }
     public string LabelName { get; init; }
-    [JsonConverter(typeof(StringEnumConverter<Enums.License>))]
     public Enums.License License { get; init; }
     public string MetadataArtist { get; init; }
     public Uri PermalinkUrl { get; init; }
@@ -34,7 +33,6 @@ public record Track
     public int ReleaseDay {  get; init; }
     public int ReleaseMonth { get; init; }
     public int ReleaseYear { get; init; }
-    [JsonConverter(typeof(StringEnumConverter<Enums.Sharing>))]
     public Enums.Sharing Sharing { get; init; }
     public bool Streamable { get; init; }
     public string TagList { get; init; }
@@ -44,8 +42,7 @@ public record Track
     public int UserPlaybackCount { get; init; }
     public Uri WaveformUrl { get; init; }
     public string AvailableCountryCodes { get; init; }
-    [JsonConverter(typeof(StringEnumConverter<Access>))]
-    public Access? Access { get; init; }
+    public Enums.Access? Access { get; init; }
     public Uri DownloadUrl { get; init; }
     public int RepostsCount { get; init; }
     public bool RevealStats { get; init; }
