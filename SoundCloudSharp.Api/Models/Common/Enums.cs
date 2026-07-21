@@ -52,4 +52,10 @@ public static class Enums {
         LiveStream,
         Other
     }
+
+    public enum Sort
+    {
+        Desc,
+        Asc
+    }
 }

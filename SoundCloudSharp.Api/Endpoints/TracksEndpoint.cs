@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using SoundCloudSharp.Api.Http;
 using SoundCloudSharp.Api.Models.Request;
+using SoundCloudSharp.Api.Models.Request.Paging;
 using SoundCloudSharp.Api.Models.Response;
 using SoundCloudSharp.Api.utils;
 
@@ -75,11 +76,11 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<StreamsResponse>(SoundCloudUrls.TrackStreams(trackUrn), query, cancellationToken);
     }
 
-    public async Task<Paging<Comment>> GetComments(string trackUrn, PagedRequest? pagedRequest = null,
+    public async Task<Paging<Comment>> GetComments(string trackUrn, GetTrackCommentsRequest? request = null,
         CancellationToken cancellationToken = default)
     {
-        pagedRequest ??= new PagedRequest();
-        var query = BuildQuery(pagedRequest);
+        request ??= new ();
+        var query = BuildQuery(request);
         return await Connector.GetAsync<Paging<Comment>>(SoundCloudUrls.TrackComments(trackUrn), query, cancellationToken);
     }
 
@@ -90,24 +91,25 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.PostAsync<Comment>(SoundCloudUrls.TrackComments(trackUrn), envelope, cancellationToken);
     }
 
-    public async Task<Paging<FullUser?>> GetTrackFavoritersAsync(string trackUrn, PagedRequest? request = null,
+    public async Task<Paging<FullUser?>> GetTrackFavoritersAsync(string trackUrn, GetTrackFavoritersRequest? request = null,
         CancellationToken cancellationToken = default)
     {
-        request ??= new PagedRequest();
+        request ??= new ();
         var query = BuildQuery(request);
         return await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.TrackFavoriters(trackUrn), query, cancellationToken);
     }
 
-    public async Task<Paging<FullUser?>> GetTrackRepostersAsync(string trackUrn, int limit = 50,
+    public async Task<Paging<FullUser?>> GetTrackRepostersAsync(string trackUrn, int? limit = null,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(trackUrn);
         return await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.TrackReposters(trackUrn), query, cancellationToken);
     }
 
-    public async Task<Paging<Track>> GetRelatedTracksAsync(string trackUrn, PagedTracksRequest request,
+    public async Task<Paging<Track>> GetRelatedTracksAsync(string trackUrn, GetRelatedTracksRequest? request = null,
         CancellationToken cancellationToken = default)
     {
+        request ??= new ();
         var query = BuildQuery(request);
         return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.TrackRelated(trackUrn), query, cancellationToken);
     }

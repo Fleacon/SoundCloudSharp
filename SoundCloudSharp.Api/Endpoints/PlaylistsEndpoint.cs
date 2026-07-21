@@ -13,7 +13,7 @@ public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.PostAsync<Playlist>(uri, body, cancellationToken);
     }
 
-    public async Task<Playlist> GetPlaylistAsync(string playlistUrn, GetPlaylistRequest? request = null, CancellationToken cancellationToken = default)
+    public async Task<Playlist> GetPlaylistAsync(string playlistUrn, GetPlaylistsRequest? request = null, CancellationToken cancellationToken = default)
     {
         request ??= new ();
         var query = BuildQuery(request);
@@ -33,14 +33,14 @@ public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return HttpUtil.StatusCodeIsSuccess(response);
     }
 
-    public async Task<Paging<Track>> GetPlaylistTracksAsync(string playlistUrn, GetPlaylistRequest? request = null, CancellationToken cancellationToken = default)
+    public async Task<Paging<Track>> GetPlaylistTracksAsync(string playlistUrn, GetPlaylistsRequest? request = null, CancellationToken cancellationToken = default)
     {
         request ??= new();
         var query = BuildQuery(request);
         return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.PlaylistTracks(playlistUrn), query, cancellationToken);
     }
 
-    public async Task<Paging<FullUser>> GetPlaylistReposters(string playlistUrn, int? limit = 50,
+    public async Task<Paging<FullUser>> GetPlaylistReposters(string playlistUrn, int? limit,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(limit);

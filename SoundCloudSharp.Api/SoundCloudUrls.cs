@@ -18,8 +18,8 @@ public static class SoundCloudUrls
     public static Uri Followers() => new("/me/followers");
     public static Uri MePlaylists() => new("/me/playlists");
     public static Uri MeTracks() => new("/me/tracks");
-    public static Uri RepostTracks() => new("/me/reposts/tracks");
-    public static Uri RepostPlaylists() => new("/me/reposts/playlists");
+    public static Uri MeRepostTracks() => new("/me/reposts/tracks");
+    public static Uri MeRepostPlaylists() => new("/me/reposts/playlists");
     
     public static Uri Tracks() => new("/tracks");
     public static Uri Playlists() => new("/playlists");
