@@ -15,7 +15,7 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         var form = FormDataBuilder.Build(request);
         var fileName = Path.GetFileName(request.AssetData.Name);
         var fileContent = new StreamContent(request.AssetData);
-        fileContent.Headers.ContentType = new MediaTypeHeaderValue(GetAudioContentType(fileName));
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue(FileTypeUtil.GetAudioContentType(fileName));
         form.Add(fileContent, "track[asset_data]", fileName);
         
         return await Connector.PostAsync<Track>(SoundCloudUrls.Tracks(), form, cancellationToken);
@@ -43,7 +43,7 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         {
             var fileName = Path.GetFileName(request.ArtworkData.Name);
             var fileContent = new StreamContent(request.ArtworkData);
-            fileContent.Headers.ContentType = new MediaTypeHeaderValue(GetImageContentType(fileName));
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(FileTypeUtil.GetImageContentType(fileName));
             form.Add(fileContent, "track[artwork_data]", fileName);
         }
         return await Connector.PutAsync<Track>(SoundCloudUrls.Track(trackUrn), form, cancellationToken);
@@ -113,21 +113,4 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         var query = BuildQuery(request);
         return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.TrackRelated(trackUrn), query, cancellationToken);
     }
-    
-    private static string GetAudioContentType(string filename) => Path.GetExtension(filename).ToLowerInvariant() switch
-    {
-        ".mp3" => "audio/mpeg",
-        ".wav" => "audio/wav",
-        ".flac" => "audio/flac",
-        ".ogg" => "audio/ogg",
-        _ => "application/octet-stream"
-    };
-
-    private static string GetImageContentType(string filename) => Path.GetExtension(filename).ToLowerInvariant() switch
-    {
-        ".png" => "image/png",
-        ".jpeg" => "image/jpeg",
-        ".gif" => "image/gif",
-        _ => throw new Exception("Unknown image format.")
-    };
 }

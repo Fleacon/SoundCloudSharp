@@ -4,13 +4,12 @@ using SoundCloudSharp.Api.Models.Converters;
 
 namespace SoundCloudSharp.Api.Models.Request;
 
-public record PlaylistRequest
+public record UpdatePlaylistRequest
 {
     public string Title { get; init; }
     public string Description { get; init; }
     public Enums.Sharing Sharing { get; init; }
-    public List<TrackReference> Tracks { get; init; }
-    public Stream ArtworkData { get; init; }
+    public List<string> Tracks { get; init; }
     public string Ean { get; init; }
     public string Genre { get; init; }
     public string LabelName { get; init; }
@@ -24,3 +23,5 @@ public record PlaylistRequest
     public Enums.PlaylistType SetType { get; init; }
     public string TagList { get; init; }
 }
+
+public record UpdatePlaylistRequestEnvelope(UpdatePlaylistRequest Playlist);

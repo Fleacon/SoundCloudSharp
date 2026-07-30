@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using SoundCloudSharp.Api.Http;
 using SoundCloudSharp.Api.Models.Request;
 using SoundCloudSharp.Api.Models.Response;
@@ -7,10 +8,18 @@ namespace SoundCloudSharp.Api.Endpoints;
 
 public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
 {
-    public async Task<Playlist> CreatePlaylist(CreateUpdatePlaylistRequest body, CancellationToken cancellationToken = default)
+    public async Task<Playlist> CreatePlaylist(CreatePlaylistRequest request, CancellationToken cancellationToken = default)
     {
-        var uri = SoundCloudUrls.Playlists();
-        return await Connector.PostAsync<Playlist>(uri, body, cancellationToken);
+        var form = FormDataBuilder.Build(request);
+        if (request.ArtworkData is not null)
+        {
+            var fileName = Path.GetFileName(request.ArtworkData.Name);
+            var fileContent = new StreamContent(request.ArtworkData);
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(FileTypeUtil.GetImageContentType(fileName));
+            form.Add(fileContent, "playlist[artwork_data]", fileName);
+        }
+        
+        return await Connector.PostAsync<Playlist>(SoundCloudUrls.Playlists(), request, cancellationToken);
     }
 
     public async Task<Playlist> GetPlaylistAsync(string playlistUrn, GetPlaylistsRequest? request = null, CancellationToken cancellationToken = default)
@@ -20,10 +29,10 @@ public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<Playlist>(SoundCloudUrls.Playlist(playlistUrn), query, cancellationToken);
     }
 
-    public async Task<Playlist> UpdatePlaylistAsync(string playlistUrn, CreateUpdatePlaylistRequest body, CancellationToken cancellationToken = default)
+    public async Task<Playlist> UpdatePlaylistAsync(string playlistUrn, UpdatePlaylistRequest request, CancellationToken cancellationToken = default)
     {
-        var uri = SoundCloudUrls.Playlist(playlistUrn);
-        return await Connector.PutAsync<Playlist>(uri, body, cancellationToken);
+        var envelope = new UpdatePlaylistRequestEnvelope(request);
+        return await Connector.PutAsync<Playlist>(SoundCloudUrls.Playlist(playlistUrn), envelope, cancellationToken);
     }
 
     public async Task<bool> DeletePlaylistAsync(string playlistUrn, CancellationToken cancellationToken = default)
