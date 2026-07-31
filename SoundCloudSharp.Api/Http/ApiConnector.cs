@@ -1,7 +1,5 @@
 using System.Net;
-using System.Text.Json;
-using Newtonsoft.Json;
-using SoundCloudSharp.Api.Endpoints;
+using SoundCloudSharp.Api.Authenticators;
 
 namespace SoundCloudSharp.Api.Http;
 
@@ -9,11 +7,19 @@ public class ApiConnector
 {
     private readonly HttpService _httpClient;
     private readonly JsonSerializer _serializer;
+    private readonly IAuthenticator? _authenticator;
 
     public ApiConnector()
     {
         _httpClient = new ();
         _serializer = new ();
+    }
+
+    public ApiConnector(IAuthenticator authenticator)
+    {
+        _httpClient = new ();
+        _serializer = new ();
+        _authenticator = authenticator;
     }
     
     public async Task<T> GetAsync<T>(Uri uri, CancellationToken cancellationToken = default)
@@ -64,6 +70,12 @@ public class ApiConnector
         return response.StatusCode;
     }
 
+    public async Task<T> AuthPostAsync<T>(Uri baseUri, object body, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
+    {
+        var response = await DoSerializedRequest<T>(new (""), HttpMethod.Post, headers: headers, body: body, baseUri: baseUri, cancellationToken: cancellationToken);
+        return response;
+    }
+
     private Request BuildRequest(Uri uri, HttpMethod method, IDictionary<string, string>? parameters, IDictionary<string, string>? headers, object? body)
     {
         var request = new Request(uri, method)
@@ -72,28 +84,30 @@ public class ApiConnector
             Body = body,
             Parameters = parameters ?? new Dictionary<string, string>(),
         };
+        _authenticator?.Apply(request, this);
         var serializedRequest = _serializer.SerializeBody(request);
         return serializedRequest;
     }
 
     // TODO: Process Errors
-    // TODO: Apply Authentication
     
     private async Task<T> DoSerializedRequest<T>(Uri uri, HttpMethod method, 
         IDictionary<string, string>? parameters = null, IDictionary<string, string>? headers = null, 
-        object? body = null, CancellationToken cancellationToken = default)
+        object? body = null, Uri? baseUri = null, CancellationToken cancellationToken = default)
     {
+        baseUri ??= SoundCloudUrls.BaseUri;
         var request = BuildRequest(uri, method, parameters, headers, body);
-        var rawResponse = await _httpClient.DoRequest(SoundCloudUrls.BaseUri, request, cancellationToken);
+        var rawResponse = await _httpClient.DoRequest(baseUri, request, cancellationToken);
         var deserializedResponse = _serializer.DeserializeResponse<T>(rawResponse);
         return deserializedResponse.Content!;
     }
 
     private async Task<Response> DoRawRequest(Uri uri, HttpMethod method,
         IDictionary<string, string>? parameters = null, IDictionary<string, string>? headers = null,
-        object? body = null, CancellationToken cancellationToken = default)
+        object? body = null, Uri? baseUri = null, CancellationToken cancellationToken = default)
     {
+        baseUri ??= SoundCloudUrls.BaseUri;
         var request = BuildRequest(uri, method, parameters, headers, body);
-        return await _httpClient.DoRequest(SoundCloudUrls.BaseUri, request, cancellationToken);
+        return await _httpClient.DoRequest(baseUri, request, cancellationToken);
     }
 }
