@@ -1,6 +1,5 @@
 using SoundCloudSharp.Api.Http;
-using SoundCloudSharp.Api.Models.Request;
-using SoundCloudSharp.Api.Models.Response;
+using SoundCloudSharp.Api.Models.Auth;
 using SoundCloudSharp.Api.utils;
 
 namespace SoundCloudSharp.Api.Endpoints;
@@ -12,8 +11,8 @@ public class OAuthEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         var content = new Dictionary<string, string>
         {
             ["grant_type"] = "authorization_code",
-            ["client_id"] = request.ClientId,
-            ["client_secret"] = request.ClientSecret,
+            ["client_id"] = request.ClientSecrets.ClientId,
+            ["client_secret"] = request.ClientSecrets.ClientSecret,
             ["redirect_uri"] = request.RedirectUri.AbsoluteUri,
             ["code_verifier"] = request.CodeVerifier,
             ["code"] = request.Code
@@ -22,10 +21,10 @@ public class OAuthEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, cancellationToken: cancellationToken);
     }
 
-    public async Task<OAuthToken> RequestToken(ClientCredentialsTokinRequest request,
+    public async Task<OAuthToken> RequestToken(ClientCredentialsTokenRequest request,
         CancellationToken cancellationToken = default)
     {
-        var credentials = $"{request.ClientId}:{request.ClientSecret}";
+        var credentials = $"{request.ClientSecrets.ClientId}:{request.ClientSecrets.ClientSecret}";
         var credBase64 = Base64Util.Encode(credentials);
         var headers = new Dictionary<string, string>
         {
