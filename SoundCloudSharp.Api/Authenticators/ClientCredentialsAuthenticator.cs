@@ -1,24 +1,23 @@
 using SoundCloudSharp.Api.Http;
-using SoundCloudSharp.Api.Models.Response;
+using SoundCloudSharp.Api.Models.Auth;
 using SoundCloudSharp.Api.utils;
 
 namespace SoundCloudSharp.Api.Authenticators;
 
-public class ClientCredentialsAuthenticator(string clientId, string clientSecret, OAuthToken token) : IAuthenticator
+public class ClientCredentialsAuthenticator(ClientSecrets clientSecrets, OAuthToken token) : IAuthenticator
 {
-    public string ClientId { get; init; } = clientId;
-    public string ClientSecret { get; init; } = clientSecret;
+    public ClientSecrets ClientSecrets { get; init; } = clientSecrets;
     public OAuthToken CurrentToken { get; private set; } = token;
     
     public async Task Apply(Request request, ApiConnector connector, CancellationToken cancellationToken = default)
     {
         if (CurrentToken.IsExpired)
         {
-            var credentials = $"{ClientId}:{ClientSecret}";
+            var credentials = $"{ClientSecrets.ClientId}:{ClientSecrets.ClientSecret}";
             var credBase64 = Base64Util.Encode(credentials);
             var headers = new Dictionary<string, string>
             {
-                ["Authorization"] = $"Basic Base64({credBase64})"
+                ["Authorization"] = $"Basic {credBase64}"
             };
         
             var content = new Dictionary<string, string>

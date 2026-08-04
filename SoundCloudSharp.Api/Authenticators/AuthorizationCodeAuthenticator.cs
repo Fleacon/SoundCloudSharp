@@ -1,13 +1,12 @@
 using SoundCloudSharp.Api.Http;
-using SoundCloudSharp.Api.Models.Response;
+using SoundCloudSharp.Api.Models.Auth;
 
 namespace SoundCloudSharp.Api.Authenticators;
 
-public class AuthorizationCodeAuthenticator(string clientId, string clientSecret, OAuthToken token)
+public class AuthorizationCodeAuthenticator(ClientSecrets clientSecrets, OAuthToken token)
     : IAuthenticator
 {
-    public string ClientId { get; init; } = clientId;
-    public string ClientSecret { get; init; } = clientSecret;
+    public ClientSecrets ClientSecrets { get; init; } = clientSecrets;
     public OAuthToken CurrentToken { get; private set; } = token;
 
     public async Task Apply(Request request, ApiConnector connector, CancellationToken cancellationToken = default)
@@ -17,8 +16,8 @@ public class AuthorizationCodeAuthenticator(string clientId, string clientSecret
             var content = new Dictionary<string, string>
             {
                 ["grant_type"] = "refresh_token",
-                ["client_id"] = ClientId,
-                ["client_secret"] = ClientSecret,
+                ["client_id"] = ClientSecrets.ClientId,
+                ["client_secret"] = ClientSecrets.ClientSecret,
                 ["refresh_token"] = CurrentToken.RefreshToken
             };
             var form = new FormUrlEncodedContent(content);
