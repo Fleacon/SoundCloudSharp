@@ -1,5 +1,7 @@
 using System.Net;
 using SoundCloudSharp.Api.Authenticators;
+using SoundCloudSharp.Api.Exceptions;
+using SoundCloudSharp.Api.Models.Response;
 
 namespace SoundCloudSharp.Api.Http;
 
@@ -98,6 +100,7 @@ public class ApiConnector
         baseUri ??= SoundCloudUrls.BaseUri;
         var request = BuildRequest(uri, method, parameters, headers, body);
         var rawResponse = await _httpClient.DoRequest(baseUri, request, cancellationToken);
+        ProcessErrors(rawResponse);
         var deserializedResponse = _serializer.DeserializeResponse<T>(rawResponse);
         return deserializedResponse.Content!;
     }
@@ -110,4 +113,24 @@ public class ApiConnector
         var request = BuildRequest(uri, method, parameters, headers, body);
         return await _httpClient.DoRequest(baseUri, request, cancellationToken);
     }
+
+    private void ProcessErrors(Response response)
+    {
+        if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 400)
+        {
+            return;
+        }
+
+        throw response.StatusCode switch
+        {
+            HttpStatusCode.Unauthorized => new ApiUnauthorizedException(SerializeError<ErrorResponse>(response)),
+            HttpStatusCode.TooManyRequests => new ApiTooManyRequestsException(SerializeError<TooManyRequestsResponse>(response)),
+            HttpStatusCode.BadRequest => new ApiBadRequestException(SerializeError<ErrorResponse>(response)),
+            HttpStatusCode.Forbidden => new ApiForbiddenException(SerializeError<ErrorResponse>(response)),
+            HttpStatusCode.NotFound => new ApiNotFoundExcpetion(SerializeError<ErrorResponse>(response)),
+            _ => new ApiException(SerializeError<ErrorResponse>(response))
+        };
+    }
+
+    private T SerializeError<T>(Response response) => _serializer.DeserializeResponse<T>(response).Content!;
 }
