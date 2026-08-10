@@ -74,11 +74,11 @@ public class ApiConnector
 
     public async Task<T> AuthPostAsync<T>(Uri baseUri, object body, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
     {
-        var response = await DoSerializedRequest<T>(new (""), HttpMethod.Post, headers: headers, body: body, baseUri: baseUri, cancellationToken: cancellationToken);
+        var response = await DoSerializedRequest<T>(null, HttpMethod.Post, headers: headers, body: body, baseUri: baseUri, cancellationToken: cancellationToken);
         return response;
     }
 
-    private Request BuildRequest(Uri uri, HttpMethod method, IDictionary<string, string>? parameters, IDictionary<string, string>? headers, object? body)
+    private Request BuildRequest(Uri? uri, HttpMethod method, IDictionary<string, string>? parameters, IDictionary<string, string>? headers, object? body)
     {
         var request = new Request(uri, method)
         {
@@ -93,7 +93,7 @@ public class ApiConnector
 
     // TODO: Process Errors
     
-    private async Task<T> DoSerializedRequest<T>(Uri uri, HttpMethod method, 
+    private async Task<T> DoSerializedRequest<T>(Uri? uri, HttpMethod method, 
         IDictionary<string, string>? parameters = null, IDictionary<string, string>? headers = null, 
         object? body = null, Uri? baseUri = null, CancellationToken cancellationToken = default)
     {

@@ -10,11 +10,6 @@ public class HttpService : IDisposable
     {
         _httpClient = new HttpClient();
     }
-    
-    public HttpService(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-    }
 
     public async Task<Response> DoRequest(Uri baseAddress, Request request, CancellationToken cancellationToken = default)
     {
@@ -26,7 +21,9 @@ public class HttpService : IDisposable
 
     private static HttpRequestMessage CreateRequest(Uri baseAddress, Request request)
     {
-        var absoluteUri = new Uri(baseAddress, request.Endpoint);
+        var absoluteUri = baseAddress;
+        if (request.Endpoint is not null)
+            absoluteUri = new Uri(baseAddress, request.Endpoint);
         var fullUri = BuildUriWithQuery(absoluteUri, request.Parameters);
         var requestMessage = new HttpRequestMessage(request.Method, fullUri);
         foreach (var header in request.Headers)
@@ -53,7 +50,7 @@ public class HttpService : IDisposable
         var queryString = string.Join("&",
             query.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}"));
 
-        return new Uri($"{endpoint}?{queryString}", UriKind.Relative);
+        return new Uri($"{endpoint}?{queryString}", UriKind.Absolute);
     }
 
     private static async Task<Response> CreateResponse(HttpResponseMessage httpResponse,  CancellationToken cancellationToken = default)
