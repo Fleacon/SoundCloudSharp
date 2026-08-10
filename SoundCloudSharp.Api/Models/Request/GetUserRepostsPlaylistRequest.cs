@@ -1,6 +1,6 @@
 namespace SoundCloudSharp.Api.Models.Request.Paging;
 
-public record GetTrackFavoritersRequest
+public record GetUserRepostsPlaylistRequest
 {
     public PagingOptions Paging { get; init; } = new();
 }

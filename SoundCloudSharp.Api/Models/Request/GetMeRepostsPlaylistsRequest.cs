@@ -1,6 +1,4 @@
-using SoundCloudSharp.Api.Models.Common;
-
-namespace SoundCloudSharp.Api.Models.Request.Paging;
+namespace SoundCloudSharp.Api.Models.Request;
 
 public record GetMeRepostsPlaylistsRequest
 {

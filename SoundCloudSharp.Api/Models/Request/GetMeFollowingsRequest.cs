@@ -1,4 +1,4 @@
-namespace SoundCloudSharp.Api.Models.Request.Paging;
+namespace SoundCloudSharp.Api.Models.Request;
 
 public record GetMeFollowingsRequest
 {

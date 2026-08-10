@@ -1,5 +1,5 @@
 using SoundCloudSharp.Api.Http;
-using SoundCloudSharp.Api.Models.Request.Paging;
+using SoundCloudSharp.Api.Models.Request;
 using SoundCloudSharp.Api.Models.Response;
 
 namespace SoundCloudSharp.Api.Endpoints;

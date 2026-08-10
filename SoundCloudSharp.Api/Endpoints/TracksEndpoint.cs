@@ -13,10 +13,18 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         CancellationToken cancellationToken = default)
     {
         var form = FormDataBuilder.Build(request);
-        var fileName = Path.GetFileName(request.AssetData.Name);
-        var fileContent = new StreamContent(request.AssetData);
-        fileContent.Headers.ContentType = new MediaTypeHeaderValue(FileTypeUtil.GetAudioContentType(fileName));
-        form.Add(fileContent, "track[asset_data]", fileName);
+        var assetFileName = Path.GetFileName(request.AssetData.Name);
+        var assetFileContent = new StreamContent(request.AssetData);
+        assetFileContent.Headers.ContentType = new MediaTypeHeaderValue(FileTypeUtil.GetAudioContentType(assetFileName));
+        form.Add(assetFileContent, "track[asset_data]", assetFileName);
+
+        if (request.ArtworkData is not null)
+        {
+            var artworkFileName = Path.GetFileName(request.ArtworkData.Name);
+            var artworkFileContent = new StreamContent(request.ArtworkData);
+            assetFileContent.Headers.ContentType = new MediaTypeHeaderValue(FileTypeUtil.GetImageContentType(artworkFileName));
+            form.Add(artworkFileContent, "track[artwork_data]", artworkFileName);
+        }
         
         return await Connector.PostAsync<Track>(SoundCloudUrls.Tracks(), form, cancellationToken);
     }
@@ -28,14 +36,7 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<Track>(SoundCloudUrls.Track(trackUrn), query, cancellationToken);
     }
 
-    public async Task<Track> UpdateTrackAsync(string trackUrn, TrackMetadataJsonRequest request, 
-        CancellationToken cancellationToken = default)
-    {
-        var envelope = new TrackMetadataRequestEnvelope(request);
-        return await Connector.PutAsync<Track>(SoundCloudUrls.Track(trackUrn), envelope, cancellationToken);
-    }
-
-    public async Task<Track> UpdateTrackAsync(string trackUrn, TrackMetadataFormRequest request,
+    public async Task<Track> UpdateTrackAsync(string trackUrn, TrackMetadataRequest request,
         CancellationToken cancellationToken = default)
     {
         var form = FormDataBuilder.Build(request);

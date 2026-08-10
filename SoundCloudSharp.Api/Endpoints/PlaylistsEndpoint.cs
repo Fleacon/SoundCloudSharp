@@ -42,7 +42,7 @@ public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return HttpUtil.StatusCodeIsSuccess(response);
     }
 
-    public async Task<Paging<Track>> GetPlaylistTracksAsync(string playlistUrn, GetPlaylistsRequest? request = null, CancellationToken cancellationToken = default)
+    public async Task<Paging<Track>> GetPlaylistTracksAsync(string playlistUrn, GetPlaylistTracksRequest? request = null, CancellationToken cancellationToken = default)
     {
         request ??= new();
         var query = BuildQuery(request);

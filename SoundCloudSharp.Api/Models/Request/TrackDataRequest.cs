@@ -39,5 +39,5 @@ public class TrackDataRequest(string title, FileStream assetData)
     public bool? RevealComments { get; init; }
     [FormField("track[isrc]")]
     public string? Isrc { get; init; }
-    public Stream? ArtworkData { get; init; }
+    public FileStream? ArtworkData { get; init; }
 }
