@@ -17,12 +17,13 @@ public class JsonSerializer
             {
                 new ActivityConverter(),
                 new DateConverter(),
-                new StringEnumConverter()
+                new TolerantStringEnumConverter()
             },
             ContractResolver = new DefaultContractResolver
             {
                 NamingStrategy = new SnakeCaseNamingStrategy()
-            }
+            },
+            NullValueHandling = NullValueHandling.Ignore,
         };
     }
     
