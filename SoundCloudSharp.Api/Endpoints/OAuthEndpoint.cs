@@ -28,7 +28,7 @@ public class OAuthEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         var credBase64 = Base64Util.Encode(credentials);
         var headers = new Dictionary<string, string>
         {
-            ["Authorization"] = $"Basic Base64({credBase64})"
+            ["Authorization"] = $"Basic {credBase64}"
         };
         
         var content = new Dictionary<string, string>
