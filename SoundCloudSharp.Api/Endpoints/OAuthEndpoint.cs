@@ -13,7 +13,7 @@ public class OAuthEndpoint(ApiConnector connector) : ApiEndpoint(connector)
             ["grant_type"] = "authorization_code",
             ["client_id"] = request.ClientSecrets.ClientId,
             ["client_secret"] = request.ClientSecrets.ClientSecret,
-            ["redirect_uri"] = request.RedirectUri.AbsoluteUri,
+            ["redirect_uri"] = request.AuthorizationUri.AbsoluteUri,
             ["code_verifier"] = request.CodeVerifier,
             ["code"] = request.Code
         };

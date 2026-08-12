@@ -1,45 +1,56 @@
+using System.Text;
 using System.Web;
+using SoundCloudSharp.Api.Exceptions;
 using SoundCloudSharp.Api.Models.Auth;
+using SoundCloudSharp.Api.Models.Response;
 using SoundCloudSharp.Api.utils;
 
 namespace SoundCloudSharp.Api.Authenticators;
 
-public class AuthorizationCodeFlow
+public static class AuthorizationCodeFlow
 {
-    public ClientSecrets ClientSecrets { get; }
-    public Uri RedirectUri { get; }
-    public string State { get; }
-    public string CodeVerifier { get; }
-    public string CodeChallenge { get; }
-
-    public AuthorizationCodeFlow(ClientSecrets clientSecret, Uri redirectUri)
+    public static AuthorizationCodeUri CreateRequest(string clientId, Uri redirectUri)
     {
-        ClientSecrets = clientSecret;
-        RedirectUri = redirectUri;
-        State = Guid.NewGuid().ToString();
-        CodeVerifier = PKCEUtil.GenerateCodeVerifier();
-        CodeChallenge = PKCEUtil.GenerateCodeChallenge(CodeVerifier);
-    }
-
-    public Uri CreateAuthorizationCodeUri()
-    {
+        var state = Guid.NewGuid().ToString();
+        var codeVerifier = PKCEUtil.GenerateCodeVerifier();
+        var codeChallenge = PKCEUtil.GenerateCodeChallenge(codeVerifier);
+        
         var builder = new UriBuilder(SoundCloudUrls.AuthorizationUri);
         var query = HttpUtility.ParseQueryString(string.Empty);
 
-        query["client_id"] = ClientSecrets.ClientId;
-        query["redirect_uri"] = RedirectUri.AbsoluteUri;
+        query["client_id"] = clientId;
+        query["redirect_uri"] = redirectUri.AbsoluteUri;
         query["response_type"] = "code";
-        query["code_challenge"] = CodeChallenge;
+        query["code_challenge"] = codeChallenge;
         query["code_challenge_method"] = "S256";
-        query["state"] = State;
+        query["state"] = state;
         
         builder.Query = query.ToString();
-        return builder.Uri;
+        
+        return new (builder.Uri, codeVerifier, state);
     }
 
-    public AuthorizationCodeTokenRequest CreateAuthorizationCodeTokenRequest(Uri callbackUri)
+    public static AuthorizationCodeTokenRequest CreateTokenRequest(ClientSecrets clientSecrets, Uri callbackUri, Uri redirectUri, string codeVerifier, string expectedState)
     {
-        var code = HttpUtility.ParseQueryString(callbackUri.ToString())["code"];
-        return code is null ? throw new("No Authorization Code from Callback") : new AuthorizationCodeTokenRequest(ClientSecrets, RedirectUri, code, CodeVerifier);
+        var query = HttpUtility.ParseQueryString(callbackUri.Query);
+        
+        var code = query["code"];
+        var returnedState = query["state"];
+
+        if (string.IsNullOrEmpty(code))
+            throw new OAuthCallbackException("The authorization callback did not contain a code.");
+        
+        if (string.IsNullOrEmpty(returnedState))
+            throw new OAuthStateMismatchException("The authorization callback did not contain a state.");
+        
+        Console.WriteLine($"expectedState : {expectedState}\n returnedState : {returnedState}");
+        
+        if (returnedState != expectedState)
+            throw new OAuthStateMismatchException("The authorization callback contained an invalid state.");
+        
+        if (string.IsNullOrWhiteSpace(codeVerifier))
+            throw new OAuthCallbackException("The PKCE code verifier is missing.");
+
+        return new AuthorizationCodeTokenRequest(clientSecrets, redirectUri, code, codeVerifier);
     }
 }
