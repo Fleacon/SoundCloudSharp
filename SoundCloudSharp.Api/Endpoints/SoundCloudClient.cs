@@ -4,7 +4,7 @@ using SoundCloudSharp.Api.Models.Auth;
 
 namespace SoundCloudSharp.Api.Endpoints;
 
-public class SoundCloudEndpoints
+public class SoundCloudClient
 {
     public MeEndpoint Me { get; private set; }
     public SearchEndpoint Search { get; private set; }
@@ -19,13 +19,13 @@ public class SoundCloudEndpoints
     
     private readonly ApiConnector _connector;
     
-    public SoundCloudEndpoints()
+    public SoundCloudClient()
     {
         _connector = new ApiConnector();
         InitializeEndpoints();
     }
 
-    public SoundCloudEndpoints(ClientSecrets clientSecrets, OAuthToken oAuthToken)
+    public SoundCloudClient(ClientSecrets clientSecrets, OAuthToken oAuthToken)
     {
         IAuthenticator authenticator = oAuthToken.Auth switch
         {
@@ -37,11 +37,16 @@ public class SoundCloudEndpoints
         InitializeEndpoints();
     }
 
-    public SoundCloudEndpoints(string accessToken)
+    public SoundCloudClient(string accessToken)
     {
         IAuthenticator authenticator = new StaticTokenAuthenticator(accessToken);
         _connector = new ApiConnector(authenticator);
         InitializeEndpoints();
+    }
+
+    public SoundCloudClient(ClientSecrets clientSecrets)
+    {
+        
     }
 
     private void InitializeEndpoints()
