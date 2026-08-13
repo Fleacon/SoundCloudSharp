@@ -1,6 +1,8 @@
 using SoundCloudSharp.Api.Authenticators;
+using SoundCloudSharp.Api.Exceptions;
 using SoundCloudSharp.Api.Http;
 using SoundCloudSharp.Api.Models.Auth;
+using SoundCloudSharp.Api.Models.Response;
 
 namespace SoundCloudSharp.Api.Endpoints;
 
@@ -47,6 +49,34 @@ public class SoundCloudClient
     public SoundCloudClient(ClientSecrets clientSecrets)
     {
         
+    }
+
+    public Task<Paging<T>> NextPage<T>(Paging<T> page)
+    {
+        if (page.NextHref is null)
+            throw new ApiPagingException("Paging object has no next page");
+        
+        return _connector.GetAsync<Paging<T>>(page.NextHref);
+    }
+
+    public async IAsyncEnumerable<T> PaginateAll<T>(Paging<T> firstPage)
+    {
+        if (firstPage.Collection is null)
+            throw new ArgumentException("First page has no collection");
+
+        var page = firstPage;
+        foreach (var item in page.Collection)
+        {
+            yield return item;
+        }
+        while (page.NextHref is not null)
+        {
+            page = await _connector.GetAsync<Paging<T>>(page.NextHref);
+            foreach (var item in page.Collection)
+            {
+                yield return item;
+            }
+        }
     }
 
     private void InitializeEndpoints()
