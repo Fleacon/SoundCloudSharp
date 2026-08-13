@@ -21,10 +21,10 @@ public class OAuthEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<OAuthToken> RequestToken(ClientCredentialsTokenRequest request,
+    public async Task<OAuthToken> RequestToken(ClientSecrets request,
         CancellationToken cancellationToken = default)
     {
-        var credentials = $"{request.ClientSecrets.ClientId}:{request.ClientSecrets.ClientSecret}";
+        var credentials = $"{request.ClientId}:{request.ClientSecret}";
         var credBase64 = Base64Util.Encode(credentials);
         var headers = new Dictionary<string, string>
         {
