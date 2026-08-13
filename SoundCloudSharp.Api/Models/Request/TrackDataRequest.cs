@@ -5,8 +5,8 @@ namespace SoundCloudSharp.Api.Models.Request;
 public class TrackDataRequest(string title, FileStream assetData)
 {
     [FormField("track[title]")]
-    public required string Title { get; init; } = title;
-    public required FileStream AssetData { get; init; } = assetData;
+    public string Title { get; init; } = title;
+    public FileStream AssetData { get; init; } = assetData;
     [FormField("track[permalink]")]
     public Uri? Permalink { get; init; }
     [FormField("track[sharing]")]
