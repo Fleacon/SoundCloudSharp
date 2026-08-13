@@ -14,8 +14,8 @@ public class HttpService : IDisposable
     public async Task<Response> DoRequest(Uri baseAddress, Request request, CancellationToken cancellationToken = default)
     {
         var httpRequestMessage = CreateRequest(baseAddress, request);
-        var httpResponse = await _httpClient.SendAsync(httpRequestMessage,  cancellationToken);
-        var response = await CreateResponse(httpResponse, cancellationToken);
+        var httpResponse = await _httpClient.SendAsync(httpRequestMessage,  cancellationToken).ConfigureAwait(false);
+        var response = await CreateResponse(httpResponse, cancellationToken).ConfigureAwait(false);
         return response;
     }
 
@@ -55,7 +55,7 @@ public class HttpService : IDisposable
 
     private static async Task<Response> CreateResponse(HttpResponseMessage httpResponse,  CancellationToken cancellationToken = default)
     {
-        var body = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
+        var body = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
         var headers = httpResponse.Headers.ToDictionary(header => header.Key, header => header.Value.First());
         return new Response(httpResponse.StatusCode, headers)
         {

@@ -51,14 +51,12 @@ public class SoundCloudClient
         
     }
 
-    public Task<Paging<T>> NextPage<T>(Paging<T> page)
     public async Task<Paging<T>> NextPage<T>(Paging<T> page)
     {
         if (page.NextHref is null)
             throw new ApiPagingException("Paging object has no next page");
         
-        return _connector.GetAsync<Paging<T>>(page.NextHref);
-        return await _connector.GetAsync<Paging<T>>(page.NextHref);
+        return await _connector.GetAsync<Paging<T>>(page.NextHref).ConfigureAwait(false);
     }
 
     public async IAsyncEnumerable<T> PaginateAll<T>(Paging<T> firstPage)
@@ -73,7 +71,7 @@ public class SoundCloudClient
         }
         while (page.NextHref is not null)
         {
-            page = await _connector.GetAsync<Paging<T>>(page.NextHref);
+            page = await _connector.GetAsync<Paging<T>>(page.NextHref).ConfigureAwait(false);
             foreach (var item in page.Collection)
             {
                 yield return item;

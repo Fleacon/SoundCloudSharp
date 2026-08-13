@@ -10,20 +10,20 @@ public class SearchEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.Tracks(), query, cancellationToken);
+        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.Tracks(), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<Playlist>> SearchPlaylistsAsync(SearchPlaylistsRequest? request = null,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.Playlists(), query, cancellationToken);
+        return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.Playlists(), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<FullUser>> SearchUsersAsync(SearchUsersRequest? request = null,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Paging<FullUser>>(SoundCloudUrls.Users(), query, cancellationToken);
+        return await Connector.GetAsync<Paging<FullUser>>(SoundCloudUrls.Users(), query, cancellationToken).ConfigureAwait(false);
     }
 }

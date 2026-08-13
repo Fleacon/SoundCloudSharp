@@ -8,6 +8,6 @@ public class MiscellaneousEndpoint(ApiConnector connector) : ApiEndpoint(connect
     public async Task<FoundResponse> Resolve(Uri uri, CancellationToken cancellationToken = default)
     {
         var query = QueryStringBuilder.BuildScalar("url", uri);
-        return await Connector.GetAsync<FoundResponse>(SoundCloudUrls.Resolve(), query, cancellationToken);
+        return await Connector.GetAsync<FoundResponse>(SoundCloudUrls.Resolve(), query, cancellationToken).ConfigureAwait(false);
     }
 }

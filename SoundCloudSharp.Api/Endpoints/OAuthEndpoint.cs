@@ -18,7 +18,7 @@ public class OAuthEndpoint(ApiConnector connector) : ApiEndpoint(connector)
             ["code"] = request.Code
         };
         var form = new FormUrlEncodedContent(content);
-        return await Connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, cancellationToken: cancellationToken);
+        return await Connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<OAuthToken> RequestToken(ClientCredentialsTokenRequest request,
@@ -37,6 +37,6 @@ public class OAuthEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         };
         var form = new FormUrlEncodedContent(content);
         
-        return await Connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, headers: headers, cancellationToken: cancellationToken);
+        return await Connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, headers: headers, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 }

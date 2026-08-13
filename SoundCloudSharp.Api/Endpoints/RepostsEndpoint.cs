@@ -13,7 +13,7 @@ public class RepostsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new ();
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.MeRepostTracks(), query, cancellationToken);
+        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.MeRepostTracks(), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<Playlist>> GetRepostedPlaylists(GetRepostedPlaylistsRequest? request = null,
@@ -21,7 +21,7 @@ public class RepostsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new();
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.MeRepostPlaylists(), query, cancellationToken);
+        return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.MeRepostPlaylists(), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<Track>> GetUserRepostedTracks(string userUrn, GetUserRepostedTracksRequest? request = null,
@@ -29,7 +29,7 @@ public class RepostsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new();
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.UserRepostedTracks(userUrn), query, cancellationToken);
+        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.UserRepostedTracks(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<Playlist>> GetUserRepostedPlaylists(string userUrn, GetUserRepostedPlaylistsRequest? request = null,
@@ -37,31 +37,31 @@ public class RepostsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new ();
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.UserRepostedPlaylists(userUrn), query, cancellationToken);
+        return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.UserRepostedPlaylists(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<bool> RepostTrack(string trackUrn, CancellationToken cancellationToken = default)
     {
-        var response = await Connector.PostAsync(SoundCloudUrls.RepostTracks(trackUrn), cancellationToken);
+        var response = await Connector.PostAsync(SoundCloudUrls.RepostTracks(trackUrn), cancellationToken).ConfigureAwait(false);
         return HttpUtil.StatusCodeIsSuccess(response);
     }
 
     [Obsolete("Marked as Deprecated by SoundCloud endpoint")]
     public async Task<bool> RemoveRepostTrack(string trackUrn, CancellationToken cancellationToken = default)
     {
-        var response = await Connector.DeleteAsync(SoundCloudUrls.RepostTracks(trackUrn), cancellationToken);
+        var response = await Connector.DeleteAsync(SoundCloudUrls.RepostTracks(trackUrn), cancellationToken).ConfigureAwait(false);
         return HttpUtil.StatusCodeIsSuccess(response);
     }
 
     public async Task<bool> RepostPlaylist(string playlistUrn, CancellationToken cancellationToken = default)
     {
-        var response = await Connector.PostAsync(SoundCloudUrls.RepostPlaylists(playlistUrn), cancellationToken);
+        var response = await Connector.PostAsync(SoundCloudUrls.RepostPlaylists(playlistUrn), cancellationToken).ConfigureAwait(false);
         return HttpUtil.StatusCodeIsSuccess(response);
     }
 
     public async Task<bool> RemoveRepostPlaylist(string playlistUrn, CancellationToken cancellationToken = default)
     {
-        var response = await Connector.DeleteAsync(SoundCloudUrls.RepostPlaylists(playlistUrn), cancellationToken);
+        var response = await Connector.DeleteAsync(SoundCloudUrls.RepostPlaylists(playlistUrn), cancellationToken).ConfigureAwait(false);
         return HttpUtil.StatusCodeIsSuccess(response);
     }
 }

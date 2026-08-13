@@ -19,26 +19,26 @@ public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
             form.Add(fileContent, "playlist[artwork_data]", fileName);
         }
         
-        return await Connector.PostAsync<Playlist>(SoundCloudUrls.Playlists(), request, cancellationToken);
+        return await Connector.PostAsync<Playlist>(SoundCloudUrls.Playlists(), request, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Playlist> GetPlaylistAsync(string playlistUrn, GetPlaylistsRequest? request = null, CancellationToken cancellationToken = default)
     {
         request ??= new ();
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Playlist>(SoundCloudUrls.Playlist(playlistUrn), query, cancellationToken);
+        return await Connector.GetAsync<Playlist>(SoundCloudUrls.Playlist(playlistUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Playlist> UpdatePlaylistAsync(string playlistUrn, UpdatePlaylistRequest request, CancellationToken cancellationToken = default)
     {
         var envelope = new UpdatePlaylistRequestEnvelope(request);
-        return await Connector.PutAsync<Playlist>(SoundCloudUrls.Playlist(playlistUrn), envelope, cancellationToken);
+        return await Connector.PutAsync<Playlist>(SoundCloudUrls.Playlist(playlistUrn), envelope, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<bool> DeletePlaylistAsync(string playlistUrn, CancellationToken cancellationToken = default)
     {
         var uri = SoundCloudUrls.Playlist(playlistUrn);
-        var response = await Connector.DeleteAsync(uri, cancellationToken);
+        var response = await Connector.DeleteAsync(uri, cancellationToken).ConfigureAwait(false);
         return HttpUtil.StatusCodeIsSuccess(response);
     }
 
@@ -46,14 +46,14 @@ public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new();
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.PlaylistTracks(playlistUrn), query, cancellationToken);
+        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.PlaylistTracks(playlistUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<FullUser>> GetPlaylistReposters(string playlistUrn, int? limit,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(limit);
-        return await Connector.GetAsync<Paging<FullUser>>(SoundCloudUrls.PlaylistReposters(playlistUrn), query, cancellationToken);
+        return await Connector.GetAsync<Paging<FullUser>>(SoundCloudUrls.PlaylistReposters(playlistUrn), query, cancellationToken).ConfigureAwait(false);
     }
 }
     

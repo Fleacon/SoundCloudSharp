@@ -26,7 +26,7 @@ public class ClientCredentialsAuthenticator(ClientSecrets clientSecrets, OAuthTo
             };
             var form = new FormUrlEncodedContent(content);
         
-            CurrentToken = await connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, headers: headers, cancellationToken: cancellationToken);
+            CurrentToken = await connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, headers: headers, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
         
         request.Headers["Authorization"] = $"OAuth {CurrentToken.AccessToken}";

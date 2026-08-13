@@ -26,14 +26,14 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
             form.Add(artworkFileContent, "track[artwork_data]", artworkFileName);
         }
         
-        return await Connector.PostAsync<Track>(SoundCloudUrls.Tracks(), form, cancellationToken);
+        return await Connector.PostAsync<Track>(SoundCloudUrls.Tracks(), form, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Track> GetTrackAsync(string trackUrn, string? secretToken = null, 
         CancellationToken cancellationToken = default)
     {
         var query  = BuildQuery(secretToken);
-        return await Connector.GetAsync<Track>(SoundCloudUrls.Track(trackUrn), query, cancellationToken);
+        return await Connector.GetAsync<Track>(SoundCloudUrls.Track(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Track> UpdateTrackAsync(string trackUrn, TrackMetadataRequest request,
@@ -47,34 +47,34 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
             fileContent.Headers.ContentType = new MediaTypeHeaderValue(FileTypeUtil.GetImageContentType(fileName));
             form.Add(fileContent, "track[artwork_data]", fileName);
         }
-        return await Connector.PutAsync<Track>(SoundCloudUrls.Track(trackUrn), form, cancellationToken);
+        return await Connector.PutAsync<Track>(SoundCloudUrls.Track(trackUrn), form, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<bool> DeleteTrackAsync(string trackUrn, 
         CancellationToken cancellationToken = default)
     {
-        var response = await Connector.DeleteAsync(SoundCloudUrls.Track(trackUrn), cancellationToken);
+        var response = await Connector.DeleteAsync(SoundCloudUrls.Track(trackUrn), cancellationToken).ConfigureAwait(false);
         return HttpUtil.StatusCodeIsSuccess(response);
     }
 
     public async Task<Storefront> CreateOrUpdateStorefront(string trackUrn, StorefrontUpdateRequest request,
         CancellationToken cancellationToken = default)
     {
-        return await Connector.PutAsync<Storefront>(SoundCloudUrls.TrackStorefront(trackUrn), request, cancellationToken);
+        return await Connector.PutAsync<Storefront>(SoundCloudUrls.TrackStorefront(trackUrn), request, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<FoundResponse> StartPreviewPlaybackAsync(string trackUrn, string? secretToken = null,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(secretToken);
-        return await Connector.GetAsync<FoundResponse>(SoundCloudUrls.TrackPreview(trackUrn), query, cancellationToken);
+        return await Connector.GetAsync<FoundResponse>(SoundCloudUrls.TrackPreview(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<StreamsResponse> GetTrackSteamsAsync(string trackUrn, string? secretToken = null,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(secretToken);
-        return await Connector.GetAsync<StreamsResponse>(SoundCloudUrls.TrackStreams(trackUrn), query, cancellationToken);
+        return await Connector.GetAsync<StreamsResponse>(SoundCloudUrls.TrackStreams(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<Comment>> GetComments(string trackUrn, GetTrackCommentsRequest? request = null,
@@ -82,14 +82,14 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new ();
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Paging<Comment>>(SoundCloudUrls.TrackComments(trackUrn), query, cancellationToken);
+        return await Connector.GetAsync<Paging<Comment>>(SoundCloudUrls.TrackComments(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Comment> CreateComment(string trackUrn, CreateCommentRequest request,
         CancellationToken cancellationToken = default)
     {
         var envelope = new CreateCommentRequestEnvelope(request);
-        return await Connector.PostAsync<Comment>(SoundCloudUrls.TrackComments(trackUrn), envelope, cancellationToken);
+        return await Connector.PostAsync<Comment>(SoundCloudUrls.TrackComments(trackUrn), envelope, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<FullUser?>> GetTrackFavoritersAsync(string trackUrn, GetTrackFavoritersRequest? request = null,
@@ -97,14 +97,14 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new ();
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.TrackFavoriters(trackUrn), query, cancellationToken);
+        return await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.TrackFavoriters(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<FullUser?>> GetTrackRepostersAsync(string trackUrn, int? limit = null,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(trackUrn);
-        return await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.TrackReposters(trackUrn), query, cancellationToken);
+        return await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.TrackReposters(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<Track>> GetRelatedTracksAsync(string trackUrn, GetRelatedTracksRequest? request = null,
@@ -112,6 +112,6 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     {
         request ??= new ();
         var query = BuildQuery(request);
-        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.TrackRelated(trackUrn), query, cancellationToken);
+        return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.TrackRelated(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 }
