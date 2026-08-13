@@ -40,15 +40,15 @@ foreach (var track in tracks.Collection)
 
 SoundCloud requires authentication for most endpoints.
 
-You can use either:
+You can use either: a static **access token** or a full OAuth flow with **client credentials** / **authorization code**
 
-a static access token
-or a full OAuth flow with client credentials / authorization code
-Example with a static token:
+Example with a static **access token**:
 
 ```csharp
 var client = new SoundCloudClient("YOUR_ACCESS_TOKEN");
 ```
+
+Example with **client credentials**
 
 ```csharp
 var authClient = new SoundCloudClient();
