@@ -6,7 +6,7 @@ namespace SoundCloudSharp.Api.Endpoints;
 
 public class OAuthEndpoint(ApiConnector connector) : ApiEndpoint(connector)
 {
-    public async Task<OAuthToken> RequestToken(AuthorizationCodeTokenRequest request, CancellationToken cancellationToken = default)
+    public async Task<OAuthToken> RequestTokenAsync(AuthorizationCodeTokenRequest request, CancellationToken cancellationToken = default)
     {
         var content = new Dictionary<string, string>
         {
@@ -21,7 +21,7 @@ public class OAuthEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<OAuthToken> RequestToken(ClientSecrets request,
+    public async Task<OAuthToken> RequestTokenAsync(ClientSecrets request,
         CancellationToken cancellationToken = default)
     {
         var credentials = $"{request.ClientId}:{request.ClientSecret}";

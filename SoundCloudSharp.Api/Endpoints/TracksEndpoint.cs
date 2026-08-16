@@ -57,7 +57,7 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return HttpUtil.StatusCodeIsSuccess(response);
     }
 
-    public async Task<Storefront> CreateOrUpdateStorefront(string trackUrn, StorefrontUpdateRequest request,
+    public async Task<Storefront> CreateOrUpdateStorefrontAsync(string trackUrn, StorefrontUpdateRequest request,
         CancellationToken cancellationToken = default)
     {
         return await Connector.PutAsync<Storefront>(SoundCloudUrls.TrackStorefront(trackUrn), request, cancellationToken).ConfigureAwait(false);
@@ -77,7 +77,7 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<StreamsResponse>(SoundCloudUrls.TrackStreams(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<Paging<Comment>> GetComments(string trackUrn, GetTrackCommentsRequest? request = null,
+    public async Task<Paging<Comment>> GetCommentsAsync(string trackUrn, GetTrackCommentsRequest? request = null,
         CancellationToken cancellationToken = default)
     {
         request ??= new ();
@@ -85,7 +85,7 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<Paging<Comment>>(SoundCloudUrls.TrackComments(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<Comment> CreateComment(string trackUrn, CreateCommentRequest request,
+    public async Task<Comment> CreateCommentAsync(string trackUrn, CreateCommentRequest request,
         CancellationToken cancellationToken = default)
     {
         var envelope = new CreateCommentRequestEnvelope(request);

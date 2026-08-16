@@ -11,11 +11,11 @@ public class HttpService : IDisposable
         _httpClient = new HttpClient();
     }
 
-    public async Task<Response> DoRequest(Uri baseAddress, Request request, CancellationToken cancellationToken = default)
+    public async Task<Response> DoRequestAsync(Uri baseAddress, Request request, CancellationToken cancellationToken = default)
     {
         var httpRequestMessage = CreateRequest(baseAddress, request);
         var httpResponse = await _httpClient.SendAsync(httpRequestMessage,  cancellationToken).ConfigureAwait(false);
-        var response = await CreateResponse(httpResponse, cancellationToken).ConfigureAwait(false);
+        var response = await CreateResponseAsync(httpResponse, cancellationToken).ConfigureAwait(false);
         return response;
     }
 
@@ -53,7 +53,7 @@ public class HttpService : IDisposable
         return new Uri($"{endpoint}?{queryString}", UriKind.Absolute);
     }
 
-    private static async Task<Response> CreateResponse(HttpResponseMessage httpResponse,  CancellationToken cancellationToken = default)
+    private static async Task<Response> CreateResponseAsync(HttpResponseMessage httpResponse,  CancellationToken cancellationToken = default)
     {
         var body = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
         var headers = httpResponse.Headers.ToDictionary(header => header.Key, header => header.Value.First());

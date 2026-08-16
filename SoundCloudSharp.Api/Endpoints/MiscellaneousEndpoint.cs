@@ -5,7 +5,7 @@ namespace SoundCloudSharp.Api.Endpoints;
 
 public class MiscellaneousEndpoint(ApiConnector connector) : ApiEndpoint(connector)
 {
-    public async Task<FoundResponse> Resolve(Uri uri, CancellationToken cancellationToken = default)
+    public async Task<FoundResponse> ResolveAsync(Uri uri, CancellationToken cancellationToken = default)
     {
         var query = QueryStringBuilder.BuildScalar("url", uri);
         return await Connector.GetAsync<FoundResponse>(SoundCloudUrls.Resolve(), query, cancellationToken).ConfigureAwait(false);

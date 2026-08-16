@@ -26,59 +26,59 @@ public class ApiConnector
     
     public async Task<T> GetAsync<T>(Uri uri, CancellationToken cancellationToken = default)
     {
-        var response = await DoSerializedRequest<T>(uri, HttpMethod.Get, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = await DoSerializedRequestAsync<T>(uri, HttpMethod.Get, cancellationToken: cancellationToken).ConfigureAwait(false);
         return response;
     }
 
     public async Task<T> GetAsync<T>(Uri uri, IDictionary<string, string>? parameters, CancellationToken cancellationToken = default)
     {
-        var response = await DoSerializedRequest<T>(uri, HttpMethod.Get, parameters: parameters,  cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = await DoSerializedRequestAsync<T>(uri, HttpMethod.Get, parameters: parameters,  cancellationToken: cancellationToken).ConfigureAwait(false);
         return response;
     }
 
     public async Task<HttpStatusCode> DeleteAsync(Uri uri, CancellationToken cancellationToken = default)
     {
-        var response = await DoRawRequest(uri, HttpMethod.Delete, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = await DoRawRequestAsync(uri, HttpMethod.Delete, cancellationToken: cancellationToken).ConfigureAwait(false);
         return response.StatusCode;
     }
 
     public async Task<T> PutAsync<T>(Uri uri, CancellationToken cancellationToken = default)
     {
-        var response = await DoSerializedRequest<T>(uri, HttpMethod.Put, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = await DoSerializedRequestAsync<T>(uri, HttpMethod.Put, cancellationToken: cancellationToken).ConfigureAwait(false);
         return response;
     }
 
     public async Task<T> PutAsync<T>(Uri uri, object? body, CancellationToken cancellationToken = default)
     {
-        var response = await DoSerializedRequest<T>(uri, HttpMethod.Put, body: body, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = await DoSerializedRequestAsync<T>(uri, HttpMethod.Put, body: body, cancellationToken: cancellationToken).ConfigureAwait(false);
         return response;
     }
     
     public async Task<HttpStatusCode> PutAsync(Uri uri, CancellationToken cancellationToken = default)
     {
-        var response = await DoRawRequest(uri, HttpMethod.Put, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = await DoRawRequestAsync(uri, HttpMethod.Put, cancellationToken: cancellationToken).ConfigureAwait(false);
         return response.StatusCode;
     }
 
     public async Task<T> PostAsync<T>(Uri uri, object? body, CancellationToken cancellationToken = default)
     {
-        var response = await DoSerializedRequest<T>(uri, HttpMethod.Post, body: body, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = await DoSerializedRequestAsync<T>(uri, HttpMethod.Post, body: body, cancellationToken: cancellationToken).ConfigureAwait(false);
         return response;
     }
 
     public async Task<HttpStatusCode> PostAsync(Uri uri, CancellationToken cancellationToken = default)
     {
-        var response = await DoRawRequest(uri, HttpMethod.Post, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = await DoRawRequestAsync(uri, HttpMethod.Post, cancellationToken: cancellationToken).ConfigureAwait(false);
         return response.StatusCode;
     }
 
     public async Task<T> AuthPostAsync<T>(Uri baseUri, object body, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
     {
-        var response = await DoSerializedRequest<T>(null, HttpMethod.Post, headers: headers, body: body, baseUri: baseUri, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = await DoSerializedRequestAsync<T>(null, HttpMethod.Post, headers: headers, body: body, baseUri: baseUri, cancellationToken: cancellationToken).ConfigureAwait(false);
         return response;
     }
 
-    private Request BuildRequest(Uri? uri, HttpMethod method, IDictionary<string, string>? parameters, IDictionary<string, string>? headers, object? body)
+    private async Task<Request> BuildRequestAsync(Uri? uri, HttpMethod method, IDictionary<string, string>? parameters, IDictionary<string, string>? headers, object? body)
     {
         var request = new Request(uri, method)
         {
@@ -86,32 +86,32 @@ public class ApiConnector
             Body = body,
             Parameters = parameters ?? new Dictionary<string, string>(),
         };
-        _authenticator?.Apply(request, this);
+        await _authenticator?.Apply(request, this);
         var serializedRequest = _serializer.SerializeBody(request);
         return serializedRequest;
     }
 
     // TODO: Process Errors
     
-    private async Task<T> DoSerializedRequest<T>(Uri? uri, HttpMethod method, 
+    private async Task<T> DoSerializedRequestAsync<T>(Uri? uri, HttpMethod method, 
         IDictionary<string, string>? parameters = null, IDictionary<string, string>? headers = null, 
         object? body = null, Uri? baseUri = null, CancellationToken cancellationToken = default)
     {
         baseUri ??= SoundCloudUrls.BaseUri;
-        var request = BuildRequest(uri, method, parameters, headers, body);
-        var rawResponse = await _httpClient.DoRequest(baseUri, request, cancellationToken).ConfigureAwait(false);
+        var request = await BuildRequestAsync(uri, method, parameters, headers, body);
+        var rawResponse = await _httpClient.DoRequestAsync(baseUri, request, cancellationToken).ConfigureAwait(false);
         ProcessErrors(rawResponse);
         var deserializedResponse = _serializer.DeserializeResponse<T>(rawResponse);
         return deserializedResponse.Content!;
     }
 
-    private async Task<Response> DoRawRequest(Uri uri, HttpMethod method,
+    private async Task<Response> DoRawRequestAsync(Uri uri, HttpMethod method,
         IDictionary<string, string>? parameters = null, IDictionary<string, string>? headers = null,
         object? body = null, Uri? baseUri = null, CancellationToken cancellationToken = default)
     {
         baseUri ??= SoundCloudUrls.BaseUri;
-        var request = BuildRequest(uri, method, parameters, headers, body);
-        return await _httpClient.DoRequest(baseUri, request, cancellationToken).ConfigureAwait(false);
+        var request = await BuildRequestAsync(uri, method, parameters, headers, body);
+        return await _httpClient.DoRequestAsync(baseUri, request, cancellationToken).ConfigureAwait(false);
     }
 
     private void ProcessErrors(Response response)

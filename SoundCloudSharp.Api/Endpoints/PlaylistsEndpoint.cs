@@ -8,7 +8,7 @@ namespace SoundCloudSharp.Api.Endpoints;
 
 public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
 {
-    public async Task<Playlist> CreatePlaylist(CreatePlaylistRequest request, CancellationToken cancellationToken = default)
+    public async Task<Playlist> CreatePlaylistAsync(CreatePlaylistRequest request, CancellationToken cancellationToken = default)
     {
         var form = FormDataBuilder.Build(request);
         if (request.ArtworkData is not null)
@@ -49,7 +49,7 @@ public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.PlaylistTracks(playlistUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<Paging<FullUser>> GetPlaylistReposters(string playlistUrn, int? limit,
+    public async Task<Paging<FullUser>> GetPlaylistRepostersAsync(string playlistUrn, int? limit,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(limit);

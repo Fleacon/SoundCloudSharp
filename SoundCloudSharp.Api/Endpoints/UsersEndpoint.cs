@@ -33,7 +33,7 @@ public class UsersEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.UserFollowings(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<Paging<Playlist>> GetPlaylists(string userUrn, GetUserPlaylistsRequest? request = null,
+    public async Task<Paging<Playlist>> GetPlaylistsAsync(string userUrn, GetUserPlaylistsRequest? request = null,
         CancellationToken cancellationToken = default)
     {
         request ??= new();
@@ -41,7 +41,7 @@ public class UsersEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.UserPlaylists(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<Paging<Track>> GetTracks(string userUrn, GetUserTracksRequest? request = null,
+    public async Task<Paging<Track>> GetTracksAsync(string userUrn, GetUserTracksRequest? request = null,
         CancellationToken cancellationToken = default)
     {
         request ??= new();
@@ -49,14 +49,14 @@ public class UsersEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.UserTracks(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<WebProfiles> GetWebProfile(string userUrn, int? limit = null,
+    public async Task<WebProfiles> GetWebProfileAsync(string userUrn, int? limit = null,
         CancellationToken cancellationToken = default)
     {
         var query = BuildQuery(limit);
         return await Connector.GetAsync<WebProfiles>(SoundCloudUrls.UserWebProfiles(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<Paging<Track>> GetLikedTracks(string userUrn, GetLikedUserTracksRequest? request = null,
+    public async Task<Paging<Track>> GetLikedTracksAsync(string userUrn, GetLikedUserTracksRequest? request = null,
         CancellationToken cancellationToken = default)
     {
         request ??= new();
@@ -64,7 +64,7 @@ public class UsersEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.UserLikedTracks(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<Paging<Playlist>> GetLikedPlaylists(string userUrn, GetLikedUserPlaylistsRequest? request = null,
+    public async Task<Paging<Playlist>> GetLikedPlaylistsAsync(string userUrn, GetLikedUserPlaylistsRequest? request = null,
         CancellationToken cancellationToken = default)
     {
         request ??= new();
@@ -72,7 +72,7 @@ public class UsersEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.UserLikedPlaylists(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<Paging<Track>> GetRepostTracks(string userUrn, GetUserRepostsTracksRequest? request = null,
+    public async Task<Paging<Track>> GetRepostTracksAsync(string userUrn, GetUserRepostsTracksRequest? request = null,
         CancellationToken cancellationToken = default)
     {
         request ??= new();
@@ -80,7 +80,7 @@ public class UsersEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.UserRepostedTracks(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<Paging<Playlist>> GetRepostPlaylists(string userUrn, GetUserPlaylistsRequest? request = null,
+    public async Task<Paging<Playlist>> GetRepostPlaylistsAsync(string userUrn, GetUserPlaylistsRequest? request = null,
         CancellationToken cancellationToken = default)
     {
         request ??= new();
