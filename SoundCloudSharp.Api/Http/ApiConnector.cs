@@ -102,7 +102,7 @@ public class ApiConnector
         var rawResponse = await _httpClient.DoRequestAsync(baseUri, request, cancellationToken).ConfigureAwait(false);
         ProcessErrors(rawResponse);
         var deserializedResponse = _serializer.DeserializeResponse<T>(rawResponse);
-        return deserializedResponse.Content!;
+        return deserializedResponse.Content ?? throw new ApiFailedSerializationException("Failed to deserialize request", rawResponse);
     }
 
     private async Task<Response> DoRawRequestAsync(Uri uri, HttpMethod method,
