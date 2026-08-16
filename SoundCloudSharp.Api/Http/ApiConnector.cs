@@ -8,7 +8,7 @@ namespace SoundCloudSharp.Api.Http;
 public class ApiConnector
 {
     private readonly HttpService _httpClient;
-    private readonly JsonSerializer _serializer;
+    private readonly NewtonsoftJsonSerializer _serializer;
     private readonly IAuthenticator? _authenticator;
 
     public ApiConnector()
@@ -127,7 +127,7 @@ public class ApiConnector
             HttpStatusCode.TooManyRequests => new ApiTooManyRequestsException(SerializeError<TooManyRequestsResponse>(response)),
             HttpStatusCode.BadRequest => new ApiBadRequestException(SerializeError<ErrorResponse>(response)),
             HttpStatusCode.Forbidden => new ApiForbiddenException(SerializeError<ErrorResponse>(response)),
-            HttpStatusCode.NotFound => new ApiNotFoundExcpetion(SerializeError<ErrorResponse>(response)),
+            HttpStatusCode.NotFound => new ApiNotFoundException(SerializeError<ErrorResponse>(response)),
             _ => new ApiException(SerializeError<ErrorResponse>(response))
         };
     }

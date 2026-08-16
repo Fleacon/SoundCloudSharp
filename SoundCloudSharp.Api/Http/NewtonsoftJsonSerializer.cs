@@ -5,28 +5,23 @@ using SoundCloudSharp.Api.Models.Converters;
 
 namespace SoundCloudSharp.Api.Http;
 
-public class JsonSerializer
+public class NewtonsoftJsonSerializer
 {
-    private readonly JsonSerializerSettings _settings;
-    
-    public JsonSerializer()
+    private readonly JsonSerializerSettings _settings = new()
     {
-        _settings = new JsonSerializerSettings
+        Converters =
         {
-            Converters =
-            {
-                new ActivityConverter(),
-                new DateConverter(),
-                new TolerantStringEnumConverter()
-            },
-            ContractResolver = new DefaultContractResolver
-            {
-                NamingStrategy = new SnakeCaseNamingStrategy()
-            },
-            NullValueHandling = NullValueHandling.Ignore,
-        };
-    }
-    
+            new ActivityConverter(),
+            new DateConverter(),
+            new TolerantStringEnumConverter()
+        },
+        ContractResolver = new DefaultContractResolver
+        {
+            NamingStrategy = new SnakeCaseNamingStrategy()
+        },
+        NullValueHandling = NullValueHandling.Ignore,
+    };
+
     public DeserializedResponse<T> DeserializeResponse<T>(Response response)
     {
         if (response.ContentType?.Equals("application/json", StringComparison.OrdinalIgnoreCase) is true)
