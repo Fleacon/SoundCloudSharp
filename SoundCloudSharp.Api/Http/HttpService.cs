@@ -2,24 +2,16 @@ using System.Text;
 
 namespace SoundCloudSharp.Api.Http;
 
-public class HttpService : IDisposable
+public class HttpService(HttpClient httpClient) : IDisposable
 {
-    private readonly HttpClient _httpClient;
-
-    public HttpService()
+    public HttpService() : this(new HttpClient())
     {
-        _httpClient = new HttpClient();
-    }
-
-    public HttpService(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
     }
 
     public async Task<Response> DoRequestAsync(Uri baseAddress, Request request, CancellationToken cancellationToken = default)
     {
         var httpRequestMessage = CreateRequest(baseAddress, request);
-        var httpResponse = await _httpClient.SendAsync(httpRequestMessage,  cancellationToken).ConfigureAwait(false);
+        var httpResponse = await httpClient.SendAsync(httpRequestMessage,  cancellationToken).ConfigureAwait(false);
         var response = await CreateResponseAsync(httpResponse, cancellationToken).ConfigureAwait(false);
         return response;
     }
@@ -71,7 +63,7 @@ public class HttpService : IDisposable
 
     public void Dispose()
     {
-        _httpClient.Dispose();
+        httpClient.Dispose();
         GC.SuppressFinalize(this);
     }
 }
