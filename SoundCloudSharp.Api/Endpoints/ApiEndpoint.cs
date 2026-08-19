@@ -2,16 +2,11 @@ using SoundCloudSharp.Api.Http;
 
 namespace SoundCloudSharp.Api.Endpoints;
 
-public abstract class ApiEndpoint
+public abstract class ApiEndpoint(ApiConnector connector)
 {
-    protected ApiConnector Connector { get; }
+    protected ApiConnector Connector { get; } = connector;
 
-    protected ApiEndpoint(ApiConnector connector)
-    {
-        Connector = connector;
-    }
-    
-    protected Dictionary<string, string> BuildQuery<T>(T request)
+    protected static Dictionary<string, string> BuildQuery<T>(T request)
     {
         return request is null
             ? new Dictionary<string, string>()
