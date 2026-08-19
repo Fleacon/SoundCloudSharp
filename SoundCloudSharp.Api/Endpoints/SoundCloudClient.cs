@@ -8,7 +8,6 @@ namespace SoundCloudSharp.Api.Endpoints;
 
 public class SoundCloudClient
 {
-    public OAuthEndpoint OAuth { get; private set; }
     public MeEndpoint Me { get; }
     public SearchEndpoint Search { get; }
     public PlaylistsEndpoint Playlists { get; }
@@ -18,6 +17,7 @@ public class SoundCloudClient
     public RepostsEndpoint Reposts { get; }
     public MiscellaneousEndpoint Miscellaneous { get; }
     public DefaultEndpoint Default { get; }
+    public OAuthClient OAuthClient { get; }
     
     private readonly ApiConnector _connector;
     
@@ -34,6 +34,7 @@ public class SoundCloudClient
         Reposts = new(_connector);
         Miscellaneous = new(_connector);
         Default = new(_connector);
+        OAuthClient = new(_connector);
     }
 
     public SoundCloudClient(string accessToken) : this(SoundCloudConfig.CreateDefault(new StaticTokenAuthenticator(accessToken)))
