@@ -5,7 +5,7 @@ using SoundCloudSharp.Api.Models.Converters;
 
 namespace SoundCloudSharp.Api.Http;
 
-public class NewtonsoftJsonSerializer
+public class NewtonsoftJsonSerializer : ISerializer
 {
     private readonly JsonSerializerSettings _settings = new()
     {

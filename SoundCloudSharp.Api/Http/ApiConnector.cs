@@ -1,29 +1,17 @@
 using System.Net;
 using SoundCloudSharp.Api.Authenticators;
+using SoundCloudSharp.Api.Endpoints;
 using SoundCloudSharp.Api.Exceptions;
 using SoundCloudSharp.Api.Models.Response;
 
 namespace SoundCloudSharp.Api.Http;
 
-public class ApiConnector
+public class ApiConnector(SoundCloudConfig config)
 {
-    private readonly HttpService _httpClient;
-    private readonly NewtonsoftJsonSerializer _serializer;
-    private readonly IAuthenticator? _authenticator;
+    private readonly HttpService _httpService = config.HttpService;
+    private readonly ISerializer _serializer = config.Serializer;
+    private readonly IAuthenticator? _authenticator = config.Authenticator;
 
-    public ApiConnector()
-    {
-        _httpClient = new ();
-        _serializer = new ();
-    }
-
-    public ApiConnector(IAuthenticator authenticator)
-    {
-        _httpClient = new ();
-        _serializer = new ();
-        _authenticator = authenticator;
-    }
-    
     public async Task<T> GetAsync<T>(Uri uri, CancellationToken cancellationToken = default)
     {
         var response = await DoSerializedRequestAsync<T>(uri, HttpMethod.Get, cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -86,12 +74,13 @@ public class ApiConnector
             Body = body,
             Parameters = parameters ?? new Dictionary<string, string>(),
         };
-        await _authenticator?.Apply(request, this);
+        if (_authenticator is not null)
+        {
+            await _authenticator.Apply(request, this);
+        }
         var serializedRequest = _serializer.SerializeBody(request);
         return serializedRequest;
     }
-
-    // TODO: Process Errors
     
     private async Task<T> DoSerializedRequestAsync<T>(Uri? uri, HttpMethod method, 
         IDictionary<string, string>? parameters = null, IDictionary<string, string>? headers = null, 
@@ -99,7 +88,7 @@ public class ApiConnector
     {
         baseUri ??= SoundCloudUrls.BaseUri;
         var request = await BuildRequestAsync(uri, method, parameters, headers, body);
-        var rawResponse = await _httpClient.DoRequestAsync(baseUri, request, cancellationToken).ConfigureAwait(false);
+        var rawResponse = await _httpService.DoRequestAsync(baseUri, request, cancellationToken).ConfigureAwait(false);
         ProcessErrors(rawResponse);
         var deserializedResponse = _serializer.DeserializeResponse<T>(rawResponse);
         return deserializedResponse.Content ?? throw new ApiFailedSerializationException("Failed to deserialize request", rawResponse);
@@ -111,7 +100,7 @@ public class ApiConnector
     {
         baseUri ??= SoundCloudUrls.BaseUri;
         var request = await BuildRequestAsync(uri, method, parameters, headers, body);
-        return await _httpClient.DoRequestAsync(baseUri, request, cancellationToken).ConfigureAwait(false);
+        return await _httpService.DoRequestAsync(baseUri, request, cancellationToken).ConfigureAwait(false);
     }
 
     private void ProcessErrors(Response response)

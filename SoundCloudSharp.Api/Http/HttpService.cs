@@ -11,6 +11,11 @@ public class HttpService : IDisposable
         _httpClient = new HttpClient();
     }
 
+    public HttpService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
     public async Task<Response> DoRequestAsync(Uri baseAddress, Request request, CancellationToken cancellationToken = default)
     {
         var httpRequestMessage = CreateRequest(baseAddress, request);
