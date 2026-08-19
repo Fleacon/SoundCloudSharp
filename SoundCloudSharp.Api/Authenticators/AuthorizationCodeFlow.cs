@@ -1,15 +1,13 @@
-using System.Text;
 using System.Web;
 using SoundCloudSharp.Api.Exceptions;
 using SoundCloudSharp.Api.Models.Auth;
-using SoundCloudSharp.Api.Models.Response;
 using SoundCloudSharp.Api.utils;
 
 namespace SoundCloudSharp.Api.Authenticators;
 
 public static class AuthorizationCodeFlow
 {
-    public static AuthorizationCodeUri CreateRequest(string clientId, Uri redirectUri)
+    public static AuthorizationCodeUri CreateRequest(string clientId, Uri redirectUri, bool mobilePopUp = false)
     {
         var state = Guid.NewGuid().ToString();
         var codeVerifier = PKCEUtil.GenerateCodeVerifier();
@@ -24,6 +22,7 @@ public static class AuthorizationCodeFlow
         query["code_challenge"] = codeChallenge;
         query["code_challenge_method"] = "S256";
         query["state"] = state;
+        if (mobilePopUp) query["display"] = "popup";
         
         builder.Query = query.ToString();
         
