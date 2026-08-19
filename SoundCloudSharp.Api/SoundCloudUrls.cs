@@ -7,6 +7,7 @@ public static class SoundCloudUrls
     public static readonly Uri BaseUri = new("https://api.soundcloud.com/");
     public static readonly Uri AuthorizationUri = new("https://secure.soundcloud.com/authorize");
     public static readonly Uri OAuthTokenUri = new("https://secure.soundcloud.com/oauth/token");
+    public static readonly Uri SignOut = new("https://secure.soundcloud.com/sign-out");
     
     public static Uri Me() => new("me", UriKind.Relative);
     public static Uri Feed() => new("me/feed", UriKind.Relative);
@@ -59,6 +60,4 @@ public static class SoundCloudUrls
     public static Uri RepostPlaylists(string playlistUrn) => new($"reposts/playlists/{Uri.EscapeDataString(playlistUrn)}", UriKind.Relative);
     
     public static Uri Resolve() => new("resolve", UriKind.Relative);
-    
-    public static Uri SignOut() => new("sign-out", UriKind.Relative);
 } 

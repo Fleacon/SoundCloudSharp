@@ -4,8 +4,9 @@ namespace SoundCloudSharp.Api.Endpoints;
 
 public class DefaultEndpoint(ApiConnector connector) : ApiEndpoint(connector)
 {
-    public async Task SignOutAsync(CancellationToken cancellationToken = default)
+    public async Task SignOutAsync(string accessToken, CancellationToken cancellationToken = default)
     {
-        await Connector.PostAsync(SoundCloudUrls.SignOut(), cancellationToken).ConfigureAwait(false);
+        var body = new { access_token = accessToken };
+        await Connector.AuthPostAsync<object>(SoundCloudUrls.SignOut, body, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 }
