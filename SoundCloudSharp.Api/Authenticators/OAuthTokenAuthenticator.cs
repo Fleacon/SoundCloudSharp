@@ -3,7 +3,7 @@ using SoundCloudSharp.Api.Models.Auth;
 
 namespace SoundCloudSharp.Api.Authenticators;
 
-public class AuthorizationCodeAuthenticator(ClientSecrets clientSecrets, OAuthToken token)
+public class OAuthTokenAuthenticator(ClientSecrets clientSecrets, OAuthToken token)
     : IAuthenticator
 {
     public ClientSecrets ClientSecrets { get; init; } = clientSecrets;
