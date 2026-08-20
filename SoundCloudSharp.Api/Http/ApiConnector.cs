@@ -91,7 +91,7 @@ public class ApiConnector(SoundCloudConfig config)
         var rawResponse = await _httpService.DoRequestAsync(baseUri, request, cancellationToken).ConfigureAwait(false);
         ProcessErrors(rawResponse);
         var deserializedResponse = _serializer.DeserializeResponse<T>(rawResponse);
-        return deserializedResponse.Content ?? throw new ApiFailedSerializationException("Failed to deserialize request", rawResponse);
+        return deserializedResponse.Content ?? throw new ApiFailedSerializationException(rawResponse, "Failed to deserialize request");
     }
 
     private async Task<Response> DoRawRequestAsync(Uri uri, HttpMethod method,
@@ -121,5 +121,9 @@ public class ApiConnector(SoundCloudConfig config)
         };
     }
 
-    private T SerializeError<T>(Response response) => _serializer.DeserializeResponse<T>(response).Content!;
+    private T SerializeError<T>(Response response)
+    {
+        var resp = _serializer.DeserializeResponse<T>(response).Content;
+        return resp ?? throw new ApiFailedSerializationException(response, $"Code: {response.StatusCode} Raw Body: {response.Body}");
+    }
 }

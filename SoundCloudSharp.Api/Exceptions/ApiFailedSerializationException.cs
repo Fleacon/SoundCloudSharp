@@ -2,4 +2,7 @@ using SoundCloudSharp.Api.Http;
 
 namespace SoundCloudSharp.Api.Exceptions;
 
-public class ApiFailedSerializationException(string message, Response Response) : Exception(message);
+public class ApiFailedSerializationException(Response rawResponse, string message) : Exception(message)
+{
+    public Response RawResponse { get; } = rawResponse;
+}
