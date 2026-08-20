@@ -58,6 +58,6 @@ public class OAuthClient : ApiEndpoint
         };
         var form = new FormUrlEncodedContent(content);
         
-        return await connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, cancellationToken: cancellationToken).ConfigureAwait(false);
+        return await Connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 }
