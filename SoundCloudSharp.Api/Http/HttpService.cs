@@ -46,8 +46,13 @@ public class HttpService(HttpClient httpClient) : IDisposable
 
         var queryString = string.Join("&",
             query.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}"));
+        
+        var builder = new UriBuilder(endpoint);
+        builder.Query = builder.Query.TrimStart('?') is { Length: > 0 } existing
+            ? $"{existing}&{queryString}"
+            : queryString;
 
-        return new Uri($"{endpoint}?{queryString}", UriKind.Absolute);
+        return builder.Uri;
     }
 
     private static async Task<Response> CreateResponseAsync(HttpResponseMessage httpResponse,  CancellationToken cancellationToken = default)
