@@ -41,7 +41,7 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         CancellationToken cancellationToken = default)
     {
         access ??= [Enums.Access.Playable, Enums.Access.Preview, Enums.Access.Blocked];
-        var query = QueryStringBuilder.BuildScalar("access", access);
+        var query = BuildQuery(access, "access");
         return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.RecentlyPlayedTracks(), query, cancellationToken).ConfigureAwait(false);
     }
 
@@ -90,7 +90,7 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
 
     public async Task<Paging<FullUser?>> GetFollowersAsync(int? limit = null, CancellationToken cancellationToken = default)
     {
-        var query = QueryStringBuilder.BuildScalar("limit", limit);
+        var query = BuildQuery(limit, "limit");
         var response = await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.Followers(), query, cancellationToken).ConfigureAwait(false);
         return response;
     }

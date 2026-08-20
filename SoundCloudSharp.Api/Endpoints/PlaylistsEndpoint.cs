@@ -49,10 +49,10 @@ public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.PlaylistTracks(playlistUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<Paging<FullUser>> GetPlaylistRepostersAsync(string playlistUrn, int? limit,
+    public async Task<Paging<FullUser>> GetPlaylistRepostersAsync(string playlistUrn, int? limit = null,
         CancellationToken cancellationToken = default)
     {
-        var query = BuildQuery(limit);
+        var query = BuildQuery(limit, "limit");
         return await Connector.GetAsync<Paging<FullUser>>(SoundCloudUrls.PlaylistReposters(playlistUrn), query, cancellationToken).ConfigureAwait(false);
     }
 }

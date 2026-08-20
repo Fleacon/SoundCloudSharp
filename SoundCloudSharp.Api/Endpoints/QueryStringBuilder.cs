@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.Reflection;
 using SoundCloudSharp.Api.Models.Request;
-using SoundCloudSharp.Api.Models.Request.Paging;
 
 namespace SoundCloudSharp.Api.Endpoints;
 
@@ -24,7 +23,7 @@ public static class QueryStringBuilder
         return query;
     }
 
-    public static void AddScalar(Dictionary<string,string> query, string name, object? value)
+    private static void AddScalar(Dictionary<string,string> query, string name, object? value)
     {
         if (value is null) return;
         query.Add(name, FormatValue(value));
@@ -56,8 +55,6 @@ public static class QueryStringBuilder
             }
         }
     }
-    
-    private static bool IsNestedRequest(Type type) => typeof(IQueryParameterContainer).IsAssignableFrom(type);
 
     private static void AppendRange(Dictionary<string, string> query, string paramName, object rangeFilter)
     {
