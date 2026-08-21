@@ -45,13 +45,6 @@ public class RepostsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return HttpUtil.StatusCodeIsSuccess(response);
     }
 
-    [Obsolete("Marked as Deprecated by SoundCloud endpoint")]
-    public async Task<bool> RemoveRepostTrackAsync(string trackUrn, CancellationToken cancellationToken = default)
-    {
-        var response = await Connector.DeleteAsync(SoundCloudUrls.RepostTracks(trackUrn), cancellationToken).ConfigureAwait(false);
-        return HttpUtil.StatusCodeIsSuccess(response);
-    }
-
     public async Task<bool> RepostPlaylistAsync(string playlistUrn, CancellationToken cancellationToken = default)
     {
         var response = await Connector.PostAsync(SoundCloudUrls.RepostPlaylists(playlistUrn), cancellationToken).ConfigureAwait(false);
