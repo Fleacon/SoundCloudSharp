@@ -111,6 +111,7 @@ public class ApiConnector(SoundCloudConfig config)
             HttpStatusCode.BadRequest => new ApiBadRequestException(SerializeError<ErrorResponse>(response)),
             HttpStatusCode.Forbidden => new ApiForbiddenException(SerializeError<ErrorResponse>(response)),
             HttpStatusCode.NotFound => new ApiNotFoundException(SerializeError<ErrorResponse>(response)),
+            HttpStatusCode.UnprocessableEntity => new ApiUnprocessableEntity(SerializeError<ErrorResponse>(response)),
             _ => new ApiException(SerializeError<ErrorResponse>(response))
         };
     }
