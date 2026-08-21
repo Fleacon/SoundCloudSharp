@@ -1,7 +1,6 @@
 using SoundCloudSharp.Api.Authenticators;
 using SoundCloudSharp.Api.Exceptions;
 using SoundCloudSharp.Api.Http;
-using SoundCloudSharp.Api.Models.Auth;
 using SoundCloudSharp.Api.Models.Response;
 
 namespace SoundCloudSharp.Api.Endpoints;

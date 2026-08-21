@@ -1,5 +1,4 @@
 using SoundCloudSharp.Api.Models.Common;
-using SoundCloudSharp.Api.Models.Request.Paging;
 
 namespace SoundCloudSharp.Api.Models.Request;
 

@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using SoundCloudSharp.Api.Models.Common;
 
 namespace SoundCloudSharp.Api.Models.Request;

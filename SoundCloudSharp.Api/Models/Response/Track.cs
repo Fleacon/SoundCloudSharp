@@ -1,6 +1,4 @@
-using Newtonsoft.Json;
 using SoundCloudSharp.Api.Models.Common;
-using SoundCloudSharp.Api.Models.Converters;
 
 namespace SoundCloudSharp.Api.Models.Response;
 

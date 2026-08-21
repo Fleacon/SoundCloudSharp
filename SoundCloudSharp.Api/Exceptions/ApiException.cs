@@ -1,4 +1,3 @@
-using SoundCloudSharp.Api.Http;
 using SoundCloudSharp.Api.Models.Response;
 
 namespace SoundCloudSharp.Api.Exceptions;
