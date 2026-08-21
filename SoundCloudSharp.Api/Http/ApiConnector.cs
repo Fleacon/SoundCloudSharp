@@ -112,6 +112,7 @@ public class ApiConnector(SoundCloudConfig config)
             HttpStatusCode.Forbidden => new ApiForbiddenException(SerializeError<ErrorResponse>(response)),
             HttpStatusCode.NotFound => new ApiNotFoundException(SerializeError<ErrorResponse>(response)),
             HttpStatusCode.UnprocessableEntity => new ApiUnprocessableEntity(SerializeError<ErrorResponse>(response)),
+            HttpStatusCode.InternalServerError => new ApiInternalServerError("SoundCloud returned an internal server error (500)"),
             _ => new ApiException(SerializeError<ErrorResponse>(response))
         };
     }
