@@ -48,9 +48,9 @@ public class ApiConnector(SoundCloudConfig config)
         return response.StatusCode;
     }
 
-    public async Task<T> PostAsync<T>(Uri uri, object? body, CancellationToken cancellationToken = default)
+    public async Task<T> PostAsync<T>(Uri uri, object? body, Uri? baseUri = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
     {
-        var response = await DoSerializedRequestAsync<T>(uri, HttpMethod.Post, body: body, cancellationToken: cancellationToken).ConfigureAwait(false);
+        var response = await DoSerializedRequestAsync<T>(uri, HttpMethod.Post, headers: headers, baseUri: baseUri, body: body, cancellationToken: cancellationToken).ConfigureAwait(false);
         return response;
     }
 
@@ -58,13 +58,7 @@ public class ApiConnector(SoundCloudConfig config)
     {
         var response = await DoRawRequestAsync(uri, HttpMethod.Post, cancellationToken: cancellationToken).ConfigureAwait(false);
         return response.StatusCode;
-    }
-
-    public async Task<T> AuthPostAsync<T>(Uri baseUri, object body, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
-    {
-        var response = await DoSerializedRequestAsync<T>(null, HttpMethod.Post, headers: headers, body: body, baseUri: baseUri, cancellationToken: cancellationToken).ConfigureAwait(false);
-        return response;
-    }
+    } 
 
     private async Task<Request> BuildRequestAsync(Uri? uri, HttpMethod method, IDictionary<string, string>? parameters, IDictionary<string, string>? headers, object? body)
     {

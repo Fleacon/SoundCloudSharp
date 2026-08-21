@@ -19,7 +19,7 @@ public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
             form.Add(fileContent, "playlist[artwork_data]", fileName);
         }
         
-        return await Connector.PostAsync<Playlist>(SoundCloudUrls.Playlists(), request, cancellationToken).ConfigureAwait(false);
+        return await Connector.PostAsync<Playlist>(SoundCloudUrls.Playlists(), request, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Playlist> GetPlaylistAsync(string playlistUrn, GetPlaylistsRequest? request = null, CancellationToken cancellationToken = default)

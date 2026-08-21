@@ -26,7 +26,7 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
             form.Add(artworkFileContent, "track[artwork_data]", artworkFileName);
         }
         
-        return await Connector.PostAsync<Track>(SoundCloudUrls.Tracks(), form, cancellationToken).ConfigureAwait(false);
+        return await Connector.PostAsync<Track>(SoundCloudUrls.Tracks(), form, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Track> GetTrackAsync(string trackUrn, string? secretToken = null, 
@@ -89,7 +89,7 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         CancellationToken cancellationToken = default)
     {
         var envelope = new CreateCommentRequestEnvelope(request);
-        return await Connector.PostAsync<Comment>(SoundCloudUrls.TrackComments(trackUrn), envelope, cancellationToken).ConfigureAwait(false);
+        return await Connector.PostAsync<Comment>(SoundCloudUrls.TrackComments(trackUrn), envelope, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<FullUser?>> GetTrackFavoritersAsync(string trackUrn, GetTrackFavoritersRequest? request = null,

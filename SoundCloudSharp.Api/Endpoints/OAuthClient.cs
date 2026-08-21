@@ -24,7 +24,7 @@ public class OAuthClient : ApiEndpoint
             ["code"] = request.Code
         };
         var form = new FormUrlEncodedContent(content);
-        return await Connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, cancellationToken: cancellationToken).ConfigureAwait(false);
+        return await Connector.PostAsync<OAuthToken>(SoundCloudUrls.OAuthToken(), form, baseUri: SoundCloudUrls.SecureUri, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<OAuthToken> RequestTokenAsync(ClientSecrets secrets,
@@ -43,7 +43,7 @@ public class OAuthClient : ApiEndpoint
         };
         var form = new FormUrlEncodedContent(content);
         
-        return await Connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, headers: headers, cancellationToken: cancellationToken).ConfigureAwait(false);
+        return await Connector.PostAsync<OAuthToken>(SoundCloudUrls.OAuthToken(), form, baseUri: SoundCloudUrls.SecureUri, headers: headers, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<OAuthToken> RefreshTokenAsync(ClientSecrets secrets, string refreshToken,
@@ -58,6 +58,6 @@ public class OAuthClient : ApiEndpoint
         };
         var form = new FormUrlEncodedContent(content);
         
-        return await Connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, cancellationToken: cancellationToken).ConfigureAwait(false);
+        return await Connector.PostAsync<OAuthToken>(SoundCloudUrls.OAuthToken(), form, baseUri: SoundCloudUrls.SecureUri, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 }

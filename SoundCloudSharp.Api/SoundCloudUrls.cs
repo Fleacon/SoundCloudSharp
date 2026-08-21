@@ -5,9 +5,11 @@ namespace SoundCloudSharp.Api;
 public static class SoundCloudUrls
 {
     public static readonly Uri BaseUri = new("https://api.soundcloud.com/");
-    public static readonly Uri AuthorizationUri = new("https://secure.soundcloud.com/authorize");
-    public static readonly Uri OAuthTokenUri = new("https://secure.soundcloud.com/oauth/token");
-    public static readonly Uri SignOut = new("https://secure.soundcloud.com/sign-out");
+    public static readonly Uri SecureUri = new("https://secure.soundcloud.com/");
+    
+    public static Uri Authorization() => new("authorize", UriKind.Relative);
+    public static Uri OAuthToken() => new("oauth/token", UriKind.Relative);
+    public static Uri SignOut() => new("sign-out", UriKind.Relative);
     
     public static Uri Me() => new("me", UriKind.Relative);
     public static Uri Feed() => new("me/feed", UriKind.Relative);

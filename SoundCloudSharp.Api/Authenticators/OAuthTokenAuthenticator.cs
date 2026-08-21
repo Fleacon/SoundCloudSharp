@@ -22,7 +22,7 @@ public class OAuthTokenAuthenticator(ClientSecrets clientSecrets, OAuthToken tok
             };
             var form = new FormUrlEncodedContent(content);
         
-            CurrentToken = await connector.AuthPostAsync<OAuthToken>(SoundCloudUrls.OAuthTokenUri, form, cancellationToken: cancellationToken).ConfigureAwait(false);
+            CurrentToken = await connector.PostAsync<OAuthToken>(SoundCloudUrls.OAuthToken(), form, baseUri: SoundCloudUrls.Authorization(), cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
         request.Headers["Authorization"] = $"OAuth {CurrentToken.AccessToken}";

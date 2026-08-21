@@ -7,6 +7,6 @@ public class DefaultEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     public async Task SignOutAsync(string accessToken, CancellationToken cancellationToken = default)
     {
         var body = new { access_token = accessToken };
-        await Connector.AuthPostAsync<object>(SoundCloudUrls.SignOut, body, cancellationToken: cancellationToken).ConfigureAwait(false);
+        await Connector.PostAsync<object>(SoundCloudUrls.SignOut(), body, baseUri: SoundCloudUrls.SecureUri, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 }

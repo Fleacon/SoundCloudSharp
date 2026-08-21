@@ -12,8 +12,10 @@ public static class AuthorizationCodeFlow
         var state = Guid.NewGuid().ToString();
         var codeVerifier = PKCEUtil.GenerateCodeVerifier();
         var codeChallenge = PKCEUtil.GenerateCodeChallenge(codeVerifier);
-        
-        var builder = new UriBuilder(SoundCloudUrls.AuthorizationUri);
+
+        var baseUri = SoundCloudUrls.SecureUri;
+        var path = SoundCloudUrls.Authorization();
+        var builder = new UriBuilder(new Uri(baseUri, path));
         var query = HttpUtility.ParseQueryString(string.Empty);
 
         query["client_id"] = clientId;
