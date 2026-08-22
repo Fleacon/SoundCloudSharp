@@ -39,7 +39,6 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     public async Task<Paging<Track>> GetRecentlyPlayedTracksAsync(Enums.Access[]? access = null,
         CancellationToken cancellationToken = default)
     {
-        access ??= [Enums.Access.Playable, Enums.Access.Preview, Enums.Access.Blocked];
         var query = BuildQuery(access, "access");
         return await Connector.GetAsync<Paging<Track>>(SoundCloudUrls.RecentlyPlayedTracks(), query, cancellationToken).ConfigureAwait(false);
     }
@@ -87,11 +86,9 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         return new FollowResult { WasAlreadyFollowing = false, User =  user };
 
     }
-    
-    public async Task<bool> UnfollowUserAsync(string userUrn, CancellationToken cancellationToken = default)
+    public async Task UnfollowUserAsync(string userUrn, CancellationToken cancellationToken = default)
     {
-        var response  = await Connector.DeleteAsync(SoundCloudUrls.Follow(userUrn), cancellationToken).ConfigureAwait(false);
-        return HttpUtil.StatusCodeIsSuccess(response);
+        await Connector.DeleteAsync(SoundCloudUrls.Follow(userUrn), cancellationToken).ConfigureAwait(false); 
     }
 
     public async Task<Paging<FullUser?>> GetFollowersAsync(int? limit = null, CancellationToken cancellationToken = default)
