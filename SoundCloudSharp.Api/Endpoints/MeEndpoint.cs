@@ -78,7 +78,14 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
 
     public async Task<FollowResult> FollowUserAsync(string userUrn, CancellationToken cancellationToken = default)
     {
-        return await Connector.PutAsync<FollowResult>(SoundCloudUrls.Follow(userUrn), cancellationToken).ConfigureAwait(false);
+        var response = await Connector.PutAsync(SoundCloudUrls.Follow(userUrn), cancellationToken).ConfigureAwait(false);
+
+        if (response.StatusCode != HttpStatusCode.Created)
+            return new FollowResult { WasAlreadyFollowing = true, User = null };
+        
+        var user = JsonConvert.DeserializeObject<FullUser>(response.Body as string ?? "");
+        return new FollowResult { WasAlreadyFollowing = false, User =  user };
+
     }
     
     public async Task<bool> UnfollowUserAsync(string userUrn, CancellationToken cancellationToken = default)

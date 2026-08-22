@@ -42,10 +42,10 @@ public class ApiConnector(SoundCloudConfig config)
         return response;
     }
     
-    public async Task<HttpStatusCode> PutAsync(Uri uri, CancellationToken cancellationToken = default)
+    public async Task<Response> PutAsync(Uri uri, CancellationToken cancellationToken = default)
     {
         var response = await DoRawRequestAsync(uri, HttpMethod.Put, cancellationToken: cancellationToken).ConfigureAwait(false);
-        return response.StatusCode;
+        return response;
     }
 
     public async Task<T> PostAsync<T>(Uri uri, object? body, Uri? baseUri = null, IDictionary<string, string>? headers = null, CancellationToken cancellationToken = default)
