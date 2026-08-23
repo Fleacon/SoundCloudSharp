@@ -2,10 +2,10 @@ using SoundCloudSharp.Api.Models.Common;
 
 namespace SoundCloudSharp.Api.Models.Request;
 
-public record CreatePlaylistRequest(string title)
+public record CreatePlaylistRequest
 {
     [FormField("playlist[title]")]
-    public string Title { get; init; } = title;
+    public required string Title { get; init; }
     [FormField("playlist[description]")]
     public string? Description { get; init; }
     [FormField("playlist[sharing]")]
@@ -13,7 +13,7 @@ public record CreatePlaylistRequest(string title)
     [FormField("playlist[tracks][][urn]")]
     public List<string>? Tracks { get; init; }
     [FormField("playlist[artwork_data]")]
-    public FileStream? ArtworkData { get; init; }
+    public DataStream? ArtworkData { get; init; }
     [FormField("playlist[ean]")]
     public string? Ean { get; init; }
     [FormField("playlist[genre]")]

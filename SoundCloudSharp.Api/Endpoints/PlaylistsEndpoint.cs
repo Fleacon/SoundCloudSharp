@@ -13,13 +13,14 @@ public class PlaylistsEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         var form = FormDataBuilder.Build(request);
         if (request.ArtworkData is not null)
         {
-            var fileName = Path.GetFileName(request.ArtworkData.Name);
-            var fileContent = new StreamContent(request.ArtworkData);
+            var fileName = Path.GetFileName(request.ArtworkData.FileName);
+            var fileContent = new StreamContent(request.ArtworkData.Data);
+            
             fileContent.Headers.ContentType = new MediaTypeHeaderValue(FileTypeUtil.GetImageContentType(fileName));
             form.Add(fileContent, "playlist[artwork_data]", fileName);
         }
         
-        return await Connector.PostAsync<Playlist>(SoundCloudUrls.Playlists(), request, cancellationToken: cancellationToken).ConfigureAwait(false);
+        return await Connector.PostAsync<Playlist>(SoundCloudUrls.Playlists(), form, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Playlist> GetPlaylistAsync(string playlistUrn, GetPlaylistsRequest? request = null, CancellationToken cancellationToken = default)

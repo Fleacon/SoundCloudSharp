@@ -2,11 +2,11 @@ using SoundCloudSharp.Api.Models.Common;
 
 namespace SoundCloudSharp.Api.Models.Request;
 
-public class TrackDataRequest(string title, FileStream assetData)
+public record TrackDataRequest
 {
     [FormField("track[title]")]
-    public string Title { get; init; } = title;
-    public FileStream AssetData { get; init; } = assetData;
+    public required string Title { get; init; }
+    public required DataStream AssetData { get; init; }
     [FormField("track[permalink]")]
     public Uri? Permalink { get; init; }
     [FormField("track[sharing]")]
@@ -39,5 +39,5 @@ public class TrackDataRequest(string title, FileStream assetData)
     public bool? RevealComments { get; init; }
     [FormField("track[isrc]")]
     public string? Isrc { get; init; }
-    public FileStream? ArtworkData { get; init; }
+    public DataStream? ArtworkData { get; init; }
 }

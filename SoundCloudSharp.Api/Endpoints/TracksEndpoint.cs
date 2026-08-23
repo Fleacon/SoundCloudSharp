@@ -12,15 +12,15 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         CancellationToken cancellationToken = default)
     {
         var form = FormDataBuilder.Build(request);
-        var assetFileName = Path.GetFileName(request.AssetData.Name);
-        var assetFileContent = new StreamContent(request.AssetData);
+        var assetFileName = Path.GetFileName(request.AssetData.FileName);
+        var assetFileContent = new StreamContent(request.AssetData.Data);
         assetFileContent.Headers.ContentType = new MediaTypeHeaderValue(FileTypeUtil.GetAudioContentType(assetFileName));
         form.Add(assetFileContent, "track[asset_data]", assetFileName);
 
         if (request.ArtworkData is not null)
         {
-            var artworkFileName = Path.GetFileName(request.ArtworkData.Name);
-            var artworkFileContent = new StreamContent(request.ArtworkData);
+            var artworkFileName = Path.GetFileName(request.ArtworkData.FileName);
+            var artworkFileContent = new StreamContent(request.ArtworkData.Data);
             artworkFileContent.Headers.ContentType = new MediaTypeHeaderValue(FileTypeUtil.GetImageContentType(artworkFileName));
             form.Add(artworkFileContent, "track[artwork_data]", artworkFileName);
         }
@@ -41,8 +41,8 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         var form = FormDataBuilder.Build(request);
         if (request.ArtworkData is not null)
         {
-            var fileName = Path.GetFileName(request.ArtworkData.Name);
-            var fileContent = new StreamContent(request.ArtworkData);
+            var fileName = Path.GetFileName(request.ArtworkData.FileName);
+            var fileContent = new StreamContent(request.ArtworkData.Data);
             fileContent.Headers.ContentType = new MediaTypeHeaderValue(FileTypeUtil.GetImageContentType(fileName));
             form.Add(fileContent, "track[artwork_data]", fileName);
         }

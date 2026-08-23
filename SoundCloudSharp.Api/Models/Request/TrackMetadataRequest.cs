@@ -40,5 +40,5 @@ public class TrackMetadataRequest
     public bool? RevealComments { get; init; }
     [FormField("track[isrc]")]
     public string? Isrc { get; init; }
-    public FileStream? ArtworkData { get; init; }
+    public DataStream? ArtworkData { get; init; }
 }
