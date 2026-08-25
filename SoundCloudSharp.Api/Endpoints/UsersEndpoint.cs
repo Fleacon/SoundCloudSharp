@@ -20,16 +20,18 @@ public class UsersEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     }
 
     public async Task<Paging<FullUser?>> GetFollowersAsync(string userUrn, int? limit = null,
+    public async Task<Paging<FullUser?>> GetFollowersAsync(string userUrn, GetUserFollowersRequest? request = null,
         CancellationToken cancellationToken = default)
     {
-        var query = BuildQuery(limit, "limit");
+        var query = BuildQuery(request);
         return await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.UserFollowers(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<Paging<FullUser?>> GetFollowingsAsync(string userUrn, int? limit = null,
+    public async Task<Paging<FullUser?>> GetFollowingsAsync(string userUrn, GetUserFollowingsRequest? request = null,
         CancellationToken cancellationToken = default)
     {
-        var query = BuildQuery(limit, "limit");
+        var query = BuildQuery(request);
         return await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.UserFollowings(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
@@ -50,9 +52,10 @@ public class UsersEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     }
 
     public async Task<WebProfiles> GetWebProfileAsync(string userUrn, int? limit = null,
+    public async Task<WebProfiles> GetWebProfileAsync(string userUrn, GetUserWebProfileRequest? request = null,
         CancellationToken cancellationToken = default)
     {
-        var query = BuildQuery(limit, "limit");
+        var query = BuildQuery(request);
         return await Connector.GetAsync<WebProfiles>(SoundCloudUrls.UserWebProfiles(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
 

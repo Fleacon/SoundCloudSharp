@@ -29,9 +29,10 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     }
 
     public async Task<Track> GetTrackAsync(string trackUrn, string? secretToken = null, 
+    public async Task<Track> GetTrackAsync(string trackUrn, GetTrackRequest? request = null,
         CancellationToken cancellationToken = default)
     {
-        var query  = BuildQuery(secretToken, "secret_token");
+        var query  = BuildQuery(request);
         return await Connector.GetAsync<Track>(SoundCloudUrls.Track(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
@@ -63,16 +64,18 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     }
 
     public async Task<FoundResponse> StartPreviewPlaybackAsync(string trackUrn, string? secretToken = null,
+    public async Task<FoundResponse> StartPreviewPlaybackAsync(string trackUrn, StartTrackPreviewPlaybackRequest? request = null,
         CancellationToken cancellationToken = default)
     {
-        var query = BuildQuery(secretToken, "secretToken");
+        var query = BuildQuery(request);
         return await Connector.GetAsync<FoundResponse>(SoundCloudUrls.TrackPreview(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<StreamsResponse> GetTrackSteamsAsync(string trackUrn, string? secretToken = null,
+    public async Task<StreamsResponse> GetTrackStreamsAsync(string trackUrn, GetTrackStreamsRequest? request = null,
         CancellationToken cancellationToken = default)
     {
-        var query = BuildQuery(secretToken, "secretToken");
+        var query = BuildQuery(request);
         return await Connector.GetAsync<StreamsResponse>(SoundCloudUrls.TrackStreams(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
@@ -100,9 +103,10 @@ public class TracksEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     }
 
     public async Task<Paging<FullUser?>> GetTrackRepostersAsync(string trackUrn, int? limit = null,
+    public async Task<Paging<FullUser?>> GetTrackRepostersAsync(string trackUrn, GetTrackRepostersRequest? request = null,
         CancellationToken cancellationToken = default)
     {
-        var query = BuildQuery(limit, "limit");
+        var query = BuildQuery(request);
         return await Connector.GetAsync<Paging<FullUser?>>(SoundCloudUrls.TrackReposters(trackUrn), query, cancellationToken).ConfigureAwait(false);
     }
 
