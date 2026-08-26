@@ -2,5 +2,8 @@ namespace SoundCloudSharp.Api.Models.Response;
 
 public record PlaylistActivity : Activity
 {
-    public required Playlist Origin { get; init; } 
+    /// <summary>
+    /// Soundcloud Playlist Object
+    /// </summary>
+    public Playlist Origin { get; init; } 
 }

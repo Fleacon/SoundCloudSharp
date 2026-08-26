@@ -1,11 +1,14 @@
 namespace SoundCloudSharp.Api.Models.Request;
 
-public record CreateCommentRequest(string body)
+public record CreateCommentRequest
 {
     [QueryParam("body")] 
-    public string Body { get; init; } = body;
+    public required string Body { get; init; }
+    /// <summary>
+    /// Timestamp of a comment
+    /// </summary>
     [QueryParam("timestamp")]
-    public string Timestamp { get; init; }
+    public TimeSpan? Timestamp { get; init; }
 }
 
 public record CreateCommentRequestEnvelope(CreateCommentRequest Comment);
