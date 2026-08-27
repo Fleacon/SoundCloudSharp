@@ -1,7 +1,7 @@
 # SoundCloudSharp
 
 [![License](https://img.shields.io/github/license/Fleacon/SoundCloudSharp)](./LICENSE)
-![SoundCloudSharp.Api NuGET](https://img.shields.io/nuget/vpre/SoundCloudSharp.Api)
+[![SoundCloudSharp.Api NuGET](https://img.shields.io/nuget/vpre/SoundCloudSharp.Api)](https://www.nuget.org/packages/SoundCloudSharp.Api)
 
 A complete & fully-typed SoundCloud API Wrapper for .NET.
 
