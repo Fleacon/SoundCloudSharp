@@ -1,5 +1,8 @@
 # SoundCloudSharp
 
+[![License](https://img.shields.io/github/license/Fleacon/SoundCloudSharp)](./LICENSE)
+![SoundCloudSharp.Api NuGET](https://img.shields.io/nuget/vpre/SoundCloudSharp.Api)
+
 A complete & fully-typed SoundCloud API Wrapper for .NET.
 
 ## Features
@@ -14,8 +17,18 @@ A complete & fully-typed SoundCloud API Wrapper for .NET.
 
 ## Installation
 
+Install the package using the .NET CLI:
+
+```bash
+dotnet add package SoundCloudSharp.Api
 ```
 
+Or add it directly to your project file:
+
+```xml
+<ItemGroup>
+  <PackageReference Include="SoundCloudSharp.Api" Version="1.0.0" />
+</ItemGroup>
 ```
 
 ## Usage
@@ -47,7 +60,3 @@ SoundCloudSharp was strongly inspired by
 
 Its API design and developer experience informed parts of this project.
 SoundCloudSharp is an independent implementation and is not affiliated with, endorsed by, or maintained by the original project or SoundCloud.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/Fleacon/SoundCloudSharp/blob/master/LICENSE) file for details.
