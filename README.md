@@ -51,7 +51,7 @@ foreach (var track in tracks.Collection)
 
 ## Docs & Usage
 
-Comprehensive documentation built with Docusaurus is coming soon. In the meantime, the endpoints, requests and response bodies are documented with XML summaries directly in the source code. The library closely maps the [https://developers.soundcloud.com/docs/api/explorer/open-api#/](SoundCloud Public API Specification).
+Comprehensive documentation built with Docusaurus is coming soon. In the meantime, the endpoints, requests and response bodies are documented with XML summaries directly in the source code. The library closely maps the [SoundCloud Public API Specification](https://developers.soundcloud.com/docs/api/explorer/open-api#/).
 
 > [!CAUTION]
 > The official SoundCloud API specification can occasionally be incomplete or inconsistent (for instance, missing 401 Unauthorized or other error responses on certain endpoints).
