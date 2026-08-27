@@ -51,7 +51,14 @@ foreach (var track in tracks.Collection)
 
 ## Docs & Usage
 
+Comprehensive documentation built with Docusaurus is coming soon. In the meantime, the endpoints, requests and response bodies are documented with XML summaries directly in the source code. The library closely maps the [https://developers.soundcloud.com/docs/api/explorer/open-api#/](SoundCloud Public API Specification).
+
+> [!CAUTION]
+> The official SoundCloud API specification can occasionally be incomplete or inconsistent (for instance, missing 401 Unauthorized or other error responses on certain endpoints).
+
 ## Contributing
+
+Contributions, bug reports, and pull requests are always welcome! If you would like to help improve SoundCloudSharp, feel free to fork the repository, make your changes, and submit a pull request. For major changes or new features, please open an issue first to discuss what you want to add.
 
 ## Acknowledgements
 
