@@ -11,6 +11,7 @@ A complete & fully-typed SoundCloud API Wrapper for .NET.
 - Easy access to tracks, users, playlists, likes, reposts, and more
 - Custom exceptions for API errors
 - Built for .NET apps and services
+- Automatically refresh expired access tokens
 
 ## Installation
 
