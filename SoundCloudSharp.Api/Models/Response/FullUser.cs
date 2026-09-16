@@ -58,4 +58,8 @@ public record FullUser : BasicUser
     /// a custom title for the website
     /// </summary>
     public string WebsiteTitle { get; init; }
+    /// <summary>
+    /// URN of the user's artist station system playlist, when available. Uses the system-playlists collection (e.g. soundcloud:system-playlists:artist-stations:{id}). Omitted or null when the user has no public tracks or no station.
+    /// </summary>
+    public string? StationUrn { get; init; }
 }

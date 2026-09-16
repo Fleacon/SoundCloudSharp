@@ -171,4 +171,8 @@ public record Track
     /// Secret URL.
     /// </summary>
     public Uri SecretUri { get; init; }
+    /// <summary>
+    /// URN of the track's station system playlist, when available. Uses the system-playlists collection (e.g. soundcloud:system-playlists:track-stations:{id}). Omitted or null for non-public tracks and tracks without a station.
+    /// </summary>
+    public string? StationUrn { get; init; }
 }

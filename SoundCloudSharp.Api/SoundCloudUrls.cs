@@ -1,5 +1,3 @@
-using SoundCloudSharp.Api.Models.Response;
-
 namespace SoundCloudSharp.Api;
 
 public static class SoundCloudUrls
@@ -10,6 +8,8 @@ public static class SoundCloudUrls
     public static Uri Authorization() => new("authorize", UriKind.Relative);
     public static Uri OAuthToken() => new("oauth/token", UriKind.Relative);
     public static Uri SignOut() => new("sign-out", UriKind.Relative);
+    
+    public static Uri Disconnect() => new ("disconnect", UriKind.Relative);
     
     public static Uri Me() => new("me", UriKind.Relative);
     public static Uri Feed() => new("me/feed", UriKind.Relative);
@@ -33,6 +33,8 @@ public static class SoundCloudUrls
     public static Uri Playlist(string playlistUrn) => new($"playlists/{Uri.EscapeDataString(playlistUrn)}", UriKind.Relative);
     public static Uri PlaylistTracks(string playlistUrn) => new($"playlists/{Uri.EscapeDataString(playlistUrn)}/tracks", UriKind.Relative);
     public static Uri PlaylistReposters(string playlistUrn) => new($"playlists/{Uri.EscapeDataString(playlistUrn)}/reposters", UriKind.Relative);
+    
+    public static Uri SystemPlaylists(string id) => new($"system-playlists/{id}", UriKind.Relative);
     
     public static Uri Track(string trackUrn) =>  new($"tracks/{Uri.EscapeDataString(trackUrn)}", UriKind.Relative);
     public static Uri TrackStorefront(string trackUrn)  => new($"tracks/{Uri.EscapeDataString(trackUrn)}/storefront", UriKind.Relative);
