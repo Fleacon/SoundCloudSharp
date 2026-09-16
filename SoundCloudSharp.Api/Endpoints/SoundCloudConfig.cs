@@ -36,7 +36,7 @@ public class SoundCloudConfig(HttpService httpService, ISerializer serializer, I
     public SoundCloudConfig WithSerializer(ISerializer serializer)
     {
         return new SoundCloudConfig(
-            httpService,
+            HttpService,
             serializer,
             Authenticator);
     }
