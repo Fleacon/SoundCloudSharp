@@ -122,6 +122,22 @@ public class MeEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     }
 
     /// <summary>
+    /// Returns a list of liked system playlists (stations) of the authenticated user.
+    /// 
+    /// Corresponds to <c>GET /me/likes/system-playlists</c>
+    /// </summary>
+    /// <param name="request">Optional paging options. If <see langword="null"/> or omitted, SoundCloud's default values are used.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the authenticated user's liked system playlists.</returns>
+    /// <exception cref="ApiUnauthorizedException">The access token is missing, invalid, or was not obtained via authorization code flow.</exception>
+    public async Task<Paging<SystemPlaylist>> GetLikedSystemPlaylistsAsync(GetMeLikedSystemPlaylistsRequest? request = null, CancellationToken cancellationToken = default)
+    {
+        request ??= new ();
+        var query = BuildQuery(request);
+        return await Connector.GetAsync<Paging<SystemPlaylist>>(SoundCloudUrls.LikedSystemPlaylists(), query, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Returns a list of users who are followed by the authenticated user.
     /// 
     /// Corresponds to <c>GET /me/followings</c>

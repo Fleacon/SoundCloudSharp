@@ -42,11 +42,11 @@ public class LikesEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     }
 
     /// <summary>
-    /// Likes a playlist.
+    /// Likes a playlist or system playlist (station).
     ///
     /// Corresponds to <c>POST /likes/playlists/{playlist_urn}</c>
     /// </summary>
-    /// <param name="playlistUrn">Urn of the playlist that will be liked</param>
+    /// <param name="playlistUrn">Urn of the playlist or system playlist (station) that will be liked</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ApiBadRequestException">The request contains invalid or unsupported values</exception>
@@ -59,11 +59,11 @@ public class LikesEndpoint(ApiConnector connector) : ApiEndpoint(connector)
     }
 
     /// <summary>
-    /// Unlikes a playlist.
+    /// Unlikes a playlist or system playlist (station).
     ///
     /// Corresponds to <c>DELETE /likes/playlists/{playlist_urn}</c>
     /// </summary>
-    /// <param name="playlistUrn">Urn of the playlist that will be unliked</param>
+    /// <param name="playlistUrn">Urn of the playlist or system playlist (station) that will be unliked</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ApiBadRequestException">The request contains invalid or unsupported values</exception>

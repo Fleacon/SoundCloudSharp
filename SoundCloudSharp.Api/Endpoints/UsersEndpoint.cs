@@ -171,6 +171,25 @@ public class UsersEndpoint(ApiConnector connector) : ApiEndpoint(connector)
         var query = BuildQuery(request);
         return await Connector.GetAsync<Paging<Playlist>>(SoundCloudUrls.UserLikedPlaylists(userUrn), query, cancellationToken).ConfigureAwait(false);
     }
+    
+    /// <summary>
+    /// Returns a list of user's liked system playlists (stations).
+    ///
+    /// Corresponds to <c>GET /users/{user_urn}/likes/system-playlists</c>
+    /// </summary>
+    /// <param name="userUrn">Urn of the user which liked system playlists will be returned</param>
+    /// <param name="request">Optional filters and paging options.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a paginated list of liked system playlists by the user associated with the <paramref name="userUrn"/></returns>
+    /// <exception cref="ApiBadRequestException">The request contains invalid or unsupported values</exception>
+    /// <exception cref="ApiUnauthorizedException">The access token is missing, invalid or not authenticated</exception>
+    /// <exception cref="ApiNotFoundException">The user associated with the <paramref name="userUrn"/> does not exist</exception>
+    public async Task<Paging<SystemPlaylist>> GetLikedSystemPlaylistsAsync(string userUrn, GetLikedUserSystemPlaylistsRequest? request = null, CancellationToken cancellationToken = default)
+    {
+        request ??= new();
+        var query = BuildQuery(request);
+        return await Connector.GetAsync<Paging<SystemPlaylist>>(SoundCloudUrls.UserLikedSystemPlaylists(userUrn), query, cancellationToken).ConfigureAwait(false);
+    }
 
     /// <summary>
     /// Returns a list of user's track reposts.
