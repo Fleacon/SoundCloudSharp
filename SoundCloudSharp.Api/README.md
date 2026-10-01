@@ -25,7 +25,7 @@ Or add it directly to your project file:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="SoundCloudSharp.Api" Version="1.1.0" />
+  <PackageReference Include="SoundCloudSharp.Api" Version="1.2.0" />
 </ItemGroup>
 ```
 
